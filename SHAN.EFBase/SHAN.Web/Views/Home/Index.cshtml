@@ -1,0 +1,86 @@
+﻿@using SHAN.Service;
+@{
+    Layout = null;
+
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Index</title>
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/themes/default/css")
+    @Styles.Render("~/Content/theme/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/easyui")
+    @Scripts.Render("~/bundles/locale")
+</head>
+<body class="easyui-layout">
+    <div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;padding:10px">north region</div>
+    <div data-options="region:'west',split:true,title:'West'" style="width:150px;padding:10px;">
+        <div class="easyui-accordion" data-options="fit:true,border:false">
+            <div title="Title1" style="padding:10px;">
+                content1
+            </div>
+            <div title="Title2" data-options="selected:true" style="padding:10px;">
+                content2
+            </div>
+            <div title="Title3" style="padding:10px">
+                content3
+            </div>
+        </div>
+    </div>
+    <div data-options="region:'center',border:false">
+        <div class="easyui-tabs" data-options="fit:true,border:false,plain:true">
+            <div title="DataGrid" style="padding:5px">
+                <table class="easyui-datagrid">
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var listdata = "@ViewBag.jlist";
+        $(function () {
+            listdata = listdata.replace(/&quot;/g, "\"");//&quot; 
+            //listdata = "{\"d\":" + listdata + "}";
+            listdata = $.parseJSON(listdata);
+            console.log(listdata);
+            for (var i = 0; i < listdata.length; i++) {
+                var ID = listdata[i].Id;
+                var Name = listdata[i].Name;
+                console.log(ID + "====" + Name)
+            }
+        $('.easyui-datagrid').datagrid({
+            url: '/Home/GetList',
+            width: $(window).width() - 150,
+            methord: 'post',
+            height: $(window).height() -150,
+            fitColumns: true,
+            sortName: 'Id',
+            sortOrder: 'desc',
+            idField: 'Id',
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: 'ID', width: 80 },
+                { field: 'Name', title: '名称', width: 120 },
+                { field: 'Price', title: '价格', width: 80, align: 'right' },
+                { field: 'Price_yh', title: '优惠价', width: 80, align: 'right' },
+                { field: 'Photo_x', title: '照片', width: 250, formatter: showImg},
+                { field: 'Price_jf', title: '积分', width: 60, align: 'center' },
+                { field: 'Renqi', title: '人气', width: 60, align: 'center' }
+            ]]
+        });
+        function showImg(value, row, index) {
+            if (row.Photo_x) {
+                return "<img style='width:24px;height:24px;' border='1' src='" + row.Photo_x + "'/>";
+            }
+        }
+    });
+        
+    </script>
+</body>
+
+</html>
+
