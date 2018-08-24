@@ -1,0 +1,98 @@
+﻿@using CZ.Models;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+    <link rel="stylesheet" type="text/css" href="/content/m.farm/css/m.farm.css?2" />
+    <script src="/content/m.farm/js/flexible.js"></script>
+    <script src="/content/shopjs/jquery.min.js" type="text/javascript"></script>
+    <style>
+    </style>
+</head>
+<body style="padding-bottom:2.2rem">
+    <div class="banner">
+        @{
+            int bjid = int.Parse(ViewBag.bjid);
+            if (bjid > 1)
+            {
+                <span >物业采购</span>
+            }
+            else
+            {
+                <span class="toppic"><img src="/content/m.farm/images/shop_farm_banner.jpg"></span>
+            }
+
+        }
+
+    </div>
+
+    <ul class="tnav">
+        <li class="qd" onclick="location.href='/wfxShoping/Product/ShowList?cid=22'"><span>热带水果</span></li>
+        <li class="fj" onclick="location.href='/wfxShoping/Product/ShowList?cid=40'"><span>渔家海货</span></li>
+        <li class="ts" onclick="location.href='/wfxShoping/Product/ShowList?cid=23'"><span>农特精选</span></li>
+        <li class="vip" onclick="location.href='/wfxShoping/Product/ShowList?cid=34'"><span>手伴礼品</span></li>
+    </ul>
+
+    <ul class="wall1">
+        <li class="pic" onclick="location.href='/wfxShoping/Product/ShowList?cid=41'">
+            <img src="/content/m.farm/images/shop_AD_01.png">
+        </li>
+        <li class="pic" onclick="location.href='/wfxShoping/Product/ShowList?cid=42'">
+            <img src="/content/m.farm/images/shop_AD_02.png">
+        </li>
+    </ul>
+            <!--推荐-->
+            <div style="height:0.8rem;background-color:#0d6016;margin-top:10px">
+                <span style="color: aliceblue;margin-top: .15rem;margin-left: 10px;float:left; font-size:0.35rem">热卖商品</span>
+    </div>
+    <ul class="wall">
+
+        @{
+            List<ProductDTO> dTOs = ViewBag.efProduct;
+            foreach (var item in dTOs)
+            {
+
+                <li class="pic">
+                    <a href="/wfxshoping/Product/Pinfo?pid=@item.Id">
+                        <img src="http://shop.571400yb.com/Data/@item.Photo_x" />
+                        <p>@item.Name</p>
+                        <b>￥@item.Price_yh</b><del>￥@item.Price</del>
+                    </a>
+                </li>
+
+            }
+        }
+
+    </ul>
+
+    <ul class="nav">
+        <li class="nav1" onclick="location.href='/wfxShoping/Main/Index'"><span>首页</span></li>
+        <li class="nav2" onclick="location.href='/wfxShoping/Category/Index'"><span>分类</span></li>
+        <li class="sb hover"><span>商城</span></li>
+        <li class="nav5" onclick="location.href='/wfxShoping/User/ShopCar'"><span>购物车</span></li>
+        <li class="nav4" onclick="location.href='/wfxShoping/User/MyShop'"><span>我的</span></li>
+    </ul>
+
+    <script>
+
+        $(".nav li").click(function () {
+            $(this).addClass("hover").siblings().removeClass('hover');
+
+        });
+
+        $(".search").focusin(function () { $(".search").val("") })
+            .focusout(function () { $(".search").val("搜索商品") })
+    </script>
+</body>
+</html>

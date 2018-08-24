@@ -1,0 +1,100 @@
+﻿
+@using CZ.Models;
+@model CZ.Models.UAddressDTO
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>业主商城</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/home.css" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/core.css" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/icon.css" />
+    <link rel="stylesheet" type="text/css" href="/content/m.farm/css/m.farm.css?2" />
+    <link rel="stylesheet" type="text/css" href="/Content/mall/css/loaders.min.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/mall/css/loading.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/mall/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/mall/css/style.css" />
+    <script src="/content/m.farm/js/flexible.js"></script>
+</head>
+<body>
+    <header class="aui-header-default aui-header-fixed aui-header-bg">
+        <a href="javascript:history.back(-1)" class="aui-header-item">
+            <i class="aui-icon aui-icon-back-white"></i>
+        </a>
+        <div class="aui-header-center aui-header-center-clear">
+            <div class="aui-header-center-logo">
+                <div class="aui-car-white-Typeface">收货地址</div>
+            </div>
+        </div>
+        <a href="#" class="aui-header-item-icon">
+            
+        </a>
+    </header>
+
+    <div class="contaniner fixed-conta">
+        <form action="/wfxShoping/User/AddressEdit" method="post" class="change-address" id="save">
+            <ul>
+                <li>
+                    <label class="addd">收货人：</label>
+                    <input type="text" value="@Model.Name" name="Name" required="required" />
+                    <input type="hidden" value="@Model.Id" name="Id" />
+                </li>
+                <li>
+                    <label class="addd">手机号：</label>
+                    <input type="tel" value="@Model.Tel" name="Tel" required="required" />
+                </li>
+                <li>
+                    <label class="addd">详细地址：</label>
+                    <textarea required="required" name="Address_xq" style="width:90%">@Model.Address_xq</textarea>
+                </li>
+            </ul>
+            @{
+                List<UAddressDTO> dTOs = ViewBag.Uaddress;
+                foreach (var i in from a in dTOs orderby a.Is_default descending,a.Id descending select a)
+                {
+                    <div class="contaniner fixed-conta">
+                        <dl class="address">
+                            <a href="#">
+                                <dt>
+                                    <input type="hidden" value="@i.Id" name="Id" />
+                                    <p>@i.Name</p>
+                                    <span>@i.Tel</span>
+                                    @{
+                                        if (i.Is_default == 1) {
+                                         <small>默认</small>
+                                        }
+                                    }
+                                </dt>
+                                <dd>@i.Address_xq</dd>
+                            </a>
+                        </dl>
+                    </div>
+                   
+
+
+                }
+            }
+
+
+            <!--<ul>
+        <li class="checkboxa">
+            <input type="checkbox" id="check" />
+            <label class="check" for="check" onselectstart="return false">设置为默认地址</label>
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <h3>删除此地址</h3>
+        </li>
+    </ul>-->
+            <input type="submit" value="保存" />
+        </form>
+    </div>
+</body>
+</html>

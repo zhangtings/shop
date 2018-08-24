@@ -1,0 +1,129 @@
+﻿
+@{ 
+    Layout = "~/Areas/Admin/Views/Shared/_Layout_Form.cshtml";
+}
+
+@model CZ.Models.ProjectDTO
+
+<header>
+    <span class="layui-breadcrumb">
+        <a href="/Admin/Main/Default">首页</a>
+        <a href="/Admin/Clinic/Clinic">预订管理</a>
+        <a><cite>项目设置</cite></a>
+    </span>
+</header>
+
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">系统设置</li>
+        @*<li>轮播图</li>
+            <li>产品图</li>
+            <li>位置信息</li>*@
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <blockquote class="layui-elem-quote">
+                注意：请根据实际情况设置项目价格及名称。
+            </blockquote>
+
+            <form class="layui-form layui-form-pane" id="submitForm">
+                @Html.HiddenFor(r => r.ID)
+                @Html.HiddenFor(r => r.VillageId)
+                <div class="layui-form-item">
+                    <label class="layui-form-label">项目名称</label>
+                    <div class="layui-input-inline">
+                        <input class="layui-input" id="Name" name="Name" type="text" value="@Model.Name" lay-verify="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label ">项目预订价格</label>
+                    <div class="layui-input-inline">
+                        <input class="layui-input" id="Price" name="Price" type="text" value="@Model.Price" lay-verify="number">
+                    </div>
+                </div>
+
+                @*<div class="layui-form-item">
+            <label class="layui-form-label ">时权农宿</label>
+            <div class="layui-input-inline w600">
+                <input class="layui-input" id="Weifangchan" name="Weifangchan" type="text" value="@CZ.Application.Setting.Instance.GetValue("Weifangchan")" lay-verify="required">
+            </div>
+        </div>*@
+                @*   <div class="layui-form-item">
+            <label class="layui-form-label ">找工作</label>
+            <div class="layui-input-inline w500">
+                <input class="layui-input" id="Workurl" name="Workurl" placeholder="如：琼海、" type="text" value="@CZ.Application.Setting.Instance.GetValue("Workurl")" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">微旅游</label>
+            <div class="layui-input-inline w500">
+                <input class="layui-input" id="Weitour" name="Weitour" placeholder="如：琼海、" type="text" value="@CZ.Application.Setting.Instance.GetValue("Weitour")" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">微新闻</label>
+            <div class="layui-input-inline w500">
+                <input class="layui-input" id="Weinews" name="Weinews" placeholder="如：琼海、" type="text" value="@CZ.Application.Setting.Instance.GetValue("Weinews")" lay-verify="required">
+            </div>
+        </div>*@
+
+
+
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" type="button" id="btnSave" lay-submit="" lay-filter="demo1">保 存</button>
+                        <button class="layui-btn layui-btn-danger cancel" id="btnCancel" type="button">取 消</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+ 
+ 
+ 
+
+<script>
+
+
+
+
+
+
+    layui.use(['form', 'layer', "element", "upload"], function () {
+        var form = layui.form;
+        var layer = layui.layer;
+        var element = layui.element;
+        var upload = layui.upload;
+
+
+
+
+
+
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            var postData = $("#submitForm").getJson();
+
+            $.submitForm({
+                url: "/Admin/Project/SaveOrUpate",
+                data: postData,
+                success: function (result) {
+                    location.href = "/Admin/Project/Project?VillageId=@Model.VillageId";
+                }
+            })
+        });
+
+
+        $("#btnCancel").click(function () {
+            location.href = "/Admin/Project/Project?VillageId=@Model.VillageId";
+        });
+
+
+
+
+    });
+
+</script>

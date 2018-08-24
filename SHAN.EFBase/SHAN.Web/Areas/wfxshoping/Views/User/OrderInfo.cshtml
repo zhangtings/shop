@@ -1,0 +1,198 @@
+﻿
+@using CZ.Models;
+@model CZ.Models.OrderDTO
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>业主超市</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+    <link rel="stylesheet" type="text/css" href="~/content/m.farm/css/m.farm.css?2" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/home.css" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/core.css" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/icon.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/mall/css/loaders.min.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/mall/css/loading.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/mall/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/mall/css/style.css" />
+    <script src="/Content/shopjs/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/content/m.farm/js/flexible.js"></script>
+    <script src="/Content/shopjs/layer/layer.js"></script>
+    <script src="/Content/shopjs/jquery.units.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script>
+
+        $(function () {
+
+
+       $.showLoading();
+        setTimeout(function () {
+            $.hideLoading();
+        }, 1000);
+
+
+        //微信JSAPI初始化
+        var wxcfg = @Html.Raw(ViewData["wxjs"]);
+        wxcfg.debug = true;
+            wx.config(wxcfg);
+
+            wx.error(function (res) {
+                $.hideLoading();
+            });
+
+            wx.ready(function () {
+
+                $(".btn.btn-submit").click(function () {
+                    $.doPost({
+                        type: "post",
+                        url: "/wfxshoping/User/wxCreatePay",
+                        data: { oid: $("#id").val() ,remark: $("#remark").val() },
+                        success: function (msg) {
+                            if (msg.Code = "success") {
+                                showPay(msg.Text);
+                            }
+                            else {
+                                $.showLoading();
+                                alert(msg.Text);
+                                //location.href = "/wfxshoping/User/MyShop";
+                            }
+                            //window.location.href = "/wfxshoping/User/MyShop";
+                        }
+                    });
+
+                });
+            });
+
+
+            function showPay(cfg) {
+
+                var json = $.parseJSON(cfg);
+                json.success = function (res) {
+                    alert("支付成功");
+                    window.location.href ="/wfxshoping/User/MyShop";
+                }
+                wx.chooseWXPay(json);
+            }
+
+            //function usedefadd() {
+            //    $(this).find("#shr").Text()
+            //    $(this).find("#dh")
+            //    $(this).find("#dz")
+            //}
+      })
+    </script>
+</head>
+<body>
+    <header class="aui-header-default aui-header-fixed aui-header-bg">
+        <a href="javascript:history.back(-1)" class="aui-header-item">
+            <i class="aui-icon aui-icon-back-white"></i>
+        </a>
+        <div class="aui-header-center aui-header-center-clear">
+            <div class="aui-header-center-logo">
+                <div class="aui-car-white-Typeface">订单详情</div>
+            </div>
+        </div>
+        <a href="#" class="aui-header-item-icon">
+
+        </a>
+    </header>
+    @Html.Hidden("id", Model.Id)
+    <div class="contaniner fixed-cont">
+        <section class="to-buy">
+            <header>
+                <div class="now">
+                    <span><img src="/Content/mall/images/map-icon.png" /></span>
+                    <dl>
+                        <dt>
+                            <b id="shr">@Model.Receiver</b>
+                            <strong id="dh">@Model.Tel</strong>
+                        </dt>
+                        <dd id="dz">@Model.Address_xq</dd>
+                    </dl>
+                </div>
+            </header>
+            <div class="buy-list order">
+                @{
+                    foreach (var p in Model.OrderProducts)
+                    {
+                        <ul>
+                            <a href="">
+                                <figure>
+                                    <img src="http://shop.571400yb.com/Data/@p.Photo_x" style="width:100px;height:100px" />
+                                </figure>
+                                <li>
+                                    <h3>@p.Name</h3>
+                                    <span>
+                                    </span>
+                                    <b>￥@p.Price</b>
+                                    <small>×@p.Num</small>
+                                </li>
+                            </a>
+                        </ul>
+                    }
+
+                }
+
+                        <dl>
+                            <dd>
+                                <span>运费</span>
+                                <small>包邮</small>
+                            </dd>
+                            <dd>
+                                <span>商品总额</span>
+                                <small>￥@Model.Price</small>
+                            </dd>
+
+                            @{if (Model.Status == 10)
+                                {
+                                    <dt>
+                                        <textarea rows="3" placeholder="给卖家留言（50字以内）" name="remark" id="remark" maxlength="60">@Model.Remark</textarea>
+                                    </dt>
+                                }
+                                else
+                                {
+                                    <dt>
+                                        买家留言：@Model.Remark
+                                    </dt>
+                                } }
+                            @{ if (Model.Status > 10 && Model.Status < 40)
+                                {
+                                    <dd>
+                                        <span>快递公司：@Model.Kuaidi_name</span>
+                                        <small>单号 @Model.Kuaidi_num</small>
+                                    </dd>
+                                } }
+                            <dd>
+                                @{ if (Model.Status == 10)
+                                    {<input type="button" value="取消订单" onclick="javascript:location.href='/wfxShoping/User/OrderEdit?id=@Model.Id&&status=0'" />}
+                                }
+
+                                @{ if (Model.Status == 30)
+                                    {<input type="button" value="确认收货" class="order-que" onclick="javascript:location.href='/wfxShoping/User/OrderEdit?id=@Model.Id&&status=40'" />}
+                                }
+                            </dd>
+
+
+                        </dl>
+            </div>
+
+        </section>
+        <!--底部不够-->
+        <div style="margin-bottom: 9%;"></div>
+    </div>
+
+    @{ if (Model.Status == 10)
+        {<footer class="buy-footer fixed-footer" style="width:100%">
+                <input type="button" value="去付款   总金额 ￥@Model.Price" class="btn btn-submit" />
+            </footer>
+
+        }
+    }
+</body>
+</html>
+

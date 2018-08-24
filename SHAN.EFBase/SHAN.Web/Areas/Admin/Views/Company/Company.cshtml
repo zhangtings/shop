@@ -1,0 +1,181 @@
+﻿@{ 
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .tag {
+        padding:5px 10px;color:white;border-radius:3px;
+    }
+</style>
+
+<div class="layui-main">
+    <header>
+        <span class="layui-breadcrumb">
+            <a href="/Admin/Main/Default">首页</a>
+            <a><cite>预订管理</cite></a>
+        </span>
+    </header>
+
+        <blockquote class="layui-elem-quote layui-quote-nm">
+            <div class="layui-form" id="searchForm">
+                <div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="Title" placeholder="如：村" lay-verify="email" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    @*<div class="layui-inline">
+                            <label class="layui-form-label">开始网点</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="BeginSite" placeholder="如：竹林宾馆" lay-verify="email" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label">目标网点</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="EndSite" placeholder="如：光电园" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>*@
+
+                    <div class="layui-inline">
+                        <button class="layui-btn btnSearch">
+                            <i class="layui-icon">&#xe615;</i> 搜 索
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </blockquote>
+
+        <div class="btn-group-sm">
+            @*<button class="layui-btn layui-btn-danger" id="btnAdd"><i class="layui-icon"></i> 新建医疗</button>
+            <button class="layui-btn layui-btn-normal " id="btnEit"><i class="layui-icon"></i>  编辑医疗</button>*@
+            <button class="layui-btn  layui-btn-danger" id="btnDel"><i class="layui-icon"></i>  删 除</button>
+        </div>
+        <div class="layui-form" id="tableForm">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="50">
+                    <col width="150">
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup>
+            </table>
+        </div>
+
+        <div id="pager"></div>
+
+</div>
+
+    <script>
+
+
+        var layedit, laydate, laypage, $;
+        layui.use(['form','element', 'layedit', 'laydate', 'laypage'], function () {
+            var element = layui.element;
+            var form = layui.form();
+            //layedit = layui.layedit;
+            //laydate = layui.laydate;
+            var laypage = layui.laypage;
+
+            var MF = {
+                QueryTable: function (currentPage) {
+                    var postData = $("#searchForm").getJson();
+                    postData["Pager.PageSize"] = 10;
+                    postData["Pager.CurrentPage"] = currentPage;
+
+                    $.query({
+                        url: "CompanyQuery",
+                        data: postData,
+                        success: function (data) {
+                            $("#tableForm").html(data);
+                            form.render();
+
+                            //全选
+                            form.on('checkbox(allChoose)', function (data) {
+                                var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+                                child.each(function (index, item) {
+                                    item.checked = data.elem.checked;
+                                });
+                                form.render('checkbox');
+                            });
+
+
+
+                            laypage({
+                                cont: 'pager',
+                                pages: $("#pager").attr("data-pagenum"),
+                                curr: $("#pager").attr("data-currentpage"),
+                                skip: true,
+                                groups: 7,
+                                jump: function (obj, first) {
+                                    //得到了当前页，用于向服务端请求对应数据
+                                    var curr = obj.curr;
+                                    if (first != true) {
+                                        MF.QueryTable(curr);
+                                    };
+                                }
+                            });
+                        }
+                    });
+                },
+                Init: function () {
+                    MF.QueryTable(1);
+                    $(".btnSearch").click(function () {
+                        MF.QueryTable(1);
+                    });
+
+                    $("#btnAdd").click(function () {
+                        location.href = "/Admin/Clinic/ClinicEdit";
+                    });
+
+                    $("#btnEit").click(function () {
+                        $checkRow = $("#tableForm input[type='checkbox']:checked");
+                        if ($checkRow.size() != 1) {
+                            $.modalMsg("请选中一条数据!", "warning");
+                            return;
+                        } 
+                        location.href = "/Admin/Clinic/ClinicEdit?id=" + $checkRow.val();
+                    });
+
+                    $("#btnDel").click(function () {
+
+                        $checkRow = $("#tableForm input[name='ID']:checked");
+                        if ($checkRow.size() <= 0) {
+                            $.modalMsg("请选择数据!", "warning");
+                            return;
+                        }
+
+                        var ids = $checkRow.val();
+
+                        $.modalConfirm("是否要删除当前数据", function (obj) {
+                            if (obj) {
+                                var postData = { id: ids };
+                                $.submitForm({
+                                    url: "/Admin/Clinic/CliniceDelete",
+                                    data: postData,
+                                    success: function (result) {
+                                        location.href = location.href;
+                                    }
+                                })
+                            }
+                        });
+
+                    });
+                }
+            };
+
+            MF.Init();
+
+        });
+
+        function callback() {
+            $(".btnSearch").click();
+        }
+    </script>
+
+
+

@@ -1,0 +1,74 @@
+﻿@{
+    Layout = null;
+}
+@model CZ.Models.Common.Message<List<CZ.Models.UserDTO>>
+ 
+<table class="layui-table">
+        <colgroup>
+            <col width="50">
+            <col width="200">
+            <col width="200">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+            <tr>
+                @*<th><input type="checkbox" name="allChoose" lay-skin="primary" lay-filter="allChoose"></th>*@
+                <th>编号</th>
+                <th>头像</th>
+                <th>名称</th>
+                <th>注册时间</th> 
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Model.Data != null&& Model.Data.Count>0)
+                {
+                    foreach (var item in Model.Data)
+                    {
+            <tr>
+                @*<td><input type="checkbox" name="ID" lay-skin="primary" value="@item.Id" ></td>*@
+                <td>@item.Id</td>
+                <td><img src="@item.Photo" alt="" style="width:100px;height:100px"></td>
+                <td>@item.Uname</td>
+                <th>@item.AddTime</th>
+                @{
+                    if (item.Fxzt == "fx")
+                    {
+                <td class="tdbj">
+                    <button class="layui-btn layui-btn-danger" id="btnDown"  onclick="javascript:isDown(@item.Id)"> 降级为会员</button>
+                    <br />目前剩余返利金额：@item.Syflje
+
+                </td>
+                    }
+                    else
+                    {
+                        <td><button class="layui-btn layui-btn-danger" id="btnUp"  onclick="javascript:isUp(@item.Id)"> 升级为分销商</button></td>
+                    }
+                }
+
+            </tr>
+                    }
+                }
+                else
+                {
+                       <tr> 
+                            <td colspan="14" align="center">暂无数据</td> 
+                        </tr>
+                }
+            }
+        </tbody>
+    </table> 
+@{
+    if (Model.Pager != null)
+    {
+<div id="pager" data-total="@Model.Pager.Total" data-currentpage="@Model.Pager.CurrentPage" data-pagenum="@Model.Pager.PageNum" ></div>
+        }
+    }
+
+
+
+
+
+

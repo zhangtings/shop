@@ -1,0 +1,159 @@
+﻿@{ 
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .tag {
+        padding:5px 10px;color:white;border-radius:3px;
+    }
+</style>
+
+<div class="layui-main">
+    <header>
+        <span class="layui-breadcrumb">
+            <a href="/Admin/Main/Default">首页</a>
+            <a><cite>商城用户</cite></a>
+        </span>
+    </header>
+
+        <blockquote class="layui-elem-quote layui-quote-nm">
+            <div class="layui-form" id="searchForm">
+                <div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="Title"  lay-verify="email" autocomplete="off" class="layui-input">
+                        </div>
+                        <input type="hidden" name="Tags" id="Tags" value="@ViewBag.Tags" />
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn btnSearch">
+                            <i class="layui-icon">&#xe615;</i> 搜 索
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </blockquote>
+
+        @*<div class="btn-group-sm">
+            <button class="layui-btn layui-btn-danger" id="btnAdd"><i class="layui-icon"></i> 新建分类</button>
+            <button class="layui-btn layui-btn-normal" id="btnEit"><i class="layui-icon"></i>  编辑分类</button>
+            <button class="layui-btn  layui-btn-danger" id="btnDel"><i class="layui-icon"></i>  删 除</button>
+        </div>*@
+        <div class="layui-form" id="tableForm">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="50">
+                    <col width="150">
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup>
+            </table>
+        </div>
+
+        <div id="pager"></div>
+
+</div>
+
+    <script>
+
+
+        var layedit, laydate, laypage, $;
+        layui.use(['form','element', 'layedit', 'laydate', 'laypage'], function () {
+            var element = layui.element;
+            var form = layui.form();
+            //layedit = layui.layedit;
+            //laydate = layui.laydate;
+            var laypage = layui.laypage;
+
+            var MF = {
+                QueryTable: function (currentPage) {
+                    var postData = $("#searchForm").getJson();
+                    postData["PageSize"] = 10;
+                    postData["CurrentPage"] = currentPage;
+
+                    $.query({
+                        url: "ShopUserQuery",
+                        data: postData,
+                        success: function (data) {
+                            $("#tableForm").html(data);
+                            form.render();
+
+
+                            laypage({
+                                cont: 'pager',
+                                pages: $("#pager").attr("data-pagenum"),
+                                curr: $("#pager").attr("data-currentpage"),
+                                skip: true,
+                                groups: 7,
+                                jump: function (obj, first) {
+                                    //得到了当前页，用于向服务端请求对应数据
+                                    var curr = obj.curr;
+                                    if (first != true) {
+                                        MF.QueryTable(curr);
+                                    };
+                                }
+                            });
+                        }
+                    });
+                },
+                Init: function () {
+                    MF.QueryTable(1);
+                    $(".btnSearch").click(function () {
+                        MF.QueryTable(1);
+                    });
+
+                    //$("#btnDown").click(function () {
+                    //    var postData = $("#searchForm").getJson();
+                    //    postData["Id"] = $(this).parents("td").find("id");
+                    //    postData["fxzt"] = "wx";
+                    //    //location.href = "/Admin/ShopUser/ShopUserEdit";
+                    //});
+
+                    //$("#btnUp").click(function () {
+                    //    var postData = $("#searchForm").getJson();
+                    //    postData["Id"] = $(this).parents("td").find("id");
+                    //    postData["fxzt"] = "fx";
+                    //    alert(postData["Id"]);
+                    //});
+
+                    //$("#btnSave").click(function () {
+                    //    var postData = $("#searchForm").getJson();
+                    //    postData["Id"] = $(this).parents("td").find("id");
+                    //    postData["fxzt"] = $(this).parents("td").find("flbl");
+
+                    //    //location.href = "/Admin/ShopUser/ShopUserEdit";
+                    //});
+
+                }
+            };
+
+            MF.Init();
+
+        });
+        
+        function isUp(id) {
+            var rows = {};
+            rows["id"] = id;
+            rows["fxzt"] = "fx";
+            $.post("ShopUserEdit", rows,function (result) { });
+            $(".btnSearch").click();
+        }
+
+
+        function isDown(id) {
+            var postData1 = {};
+            postData1["id"] = id;
+            postData1["fxzt"] = "wx";
+            $.post("ShopUserEdit", postData1, function (result) {
+            });
+            $(".btnSearch").click();
+        }
+        function callback() {
+            $(".btnSearch").click();
+        }
+    </script>
+
+
+

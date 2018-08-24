@@ -1,0 +1,247 @@
+﻿
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout_Form.cshtml";
+}
+ 
+
+<header>
+    <span class="layui-breadcrumb">
+        <a href="/Admin/Main/Default">首页</a>
+        <a href="/Admin/village/village">农庄列表</a>
+        <a><cite>系统设置</cite></a>
+    </span>
+</header>
+
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">系统设置</li>
+        @*<li>轮播图</li>
+        <li>产品图</li>
+        <li>位置信息</li>*@
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <blockquote class="layui-elem-quote">
+                注意：请根据网点距离设置任务时长。
+            </blockquote>
+
+            <form class="layui-form layui-form-pane" id="submitForm">
+
+                <div class="layui-form-item"> 
+                    <label class="layui-form-label">村直播</label>
+                    <div class="layui-input-inline w500">
+                        <input class="layui-input" id="Cunzhibo" name="Cunzhibo" type="text" value="@CZ.Application.Setting.Instance.GetValue("Cunzhibo")" lay-verify="required">
+                    </div>
+                </div>
+               <div class="layui-form-item">
+                    <label class="layui-form-label ">村里好货</label>
+                    <div class="layui-input-inline w600">
+                        <input class="layui-input" id="Cunhaohuo" name="Cunhaohuo" type="text" value="@CZ.Application.Setting.Instance.GetValue("Cunhaohuo")" lay-verify="required">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label ">微房产</label>
+                    <div class="layui-input-inline w600">
+                        <input class="layui-input" id="Weifangchan" name="Weifangchan" type="text" value="@CZ.Application.Setting.Instance.GetValue("Weifangchan")" lay-verify="required">
+                    </div>
+                </div>
+            <div class="layui-form-item">
+        <label class="layui-form-label ">找工作</label>
+        <div class="layui-input-inline w500">
+            <input class="layui-input" id="Workurl" name="Workurl" placeholder="如：琼海、" type="text" value="@CZ.Application.Setting.Instance.GetValue("Workurl")" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">微旅游</label>
+        <div class="layui-input-inline w500">
+            <input class="layui-input" id="Weitour" name="Weitour" placeholder="如：琼海、" type="text" value="@CZ.Application.Setting.Instance.GetValue("Weitour")" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">微新闻</label>
+        <div class="layui-input-inline w500">
+            <input class="layui-input" id="Weinews" name="Weinews" placeholder="如：琼海、" type="text" value="@CZ.Application.Setting.Instance.GetValue("Weinews")" lay-verify="required">
+        </div>
+    </div>
+                 
+
+    
+        
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" type="button" id="btnSave" lay-submit="" lay-filter="demo1">保 存</button>
+                        <button class="layui-btn layui-btn-danger cancel" id="btnCancel" type="button">取 消</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
+
+<script>
+
+    var imgid = "";
+    var geocoder, map, marker = null, markersArray = [];
+
+    var init = function () {
+        var center = new qq.maps.LatLng(19.256053019664275, 110.47405242919922);
+        map = new qq.maps.Map(document.getElementById('container'), {
+            center: center,
+            zoom: 15
+        });
+
+        //调用地址解析类
+        geocoder = new qq.maps.Geocoder({
+            complete: function (result) {
+                map.setCenter(result.detail.location);
+                map.zoomTo(15);
+                addMarker(result.detail.location);
+            }
+        });
+
+        //添加监听事件  获取鼠标点击事件
+        qq.maps.event.addListener(map, 'click', function (event) {
+            clearOverlays();
+            addMarker(event.latLng);
+        });
+    };
+
+
+    //添加标记
+    function addMarker(location) {
+        var marker = new qq.maps.Marker({
+            position: location,
+            map: map
+        });
+        markersArray.push(marker);
+
+        $("#Lat").val(marker.getPosition().getLat());
+        $("#Lng").val(marker.getPosition().getLng());
+        $("#Zoom").val(map.getZoom());
+
+    }
+
+    //清除覆盖层
+    function clearOverlays() {
+        if (markersArray) {
+            for (i in markersArray) {
+                markersArray[i].setMap(null);
+            }
+        }
+    }
+
+    function codeAddress() {
+        var address = document.getElementById("mapAddress").value;
+        //通过getLocation();方法获取位置信息值
+        geocoder.getLocation(address);
+    }
+
+
+
+
+    layui.use(['form', 'layer', "element", "upload"], function () {
+        var form = layui.form;
+        var layer = layui.layer;
+        var element = layui.element;
+        var upload = layui.upload;
+
+
+        init();
+
+
+        //多图片上传
+        upload.render({
+            elem: '#btnUpload2',
+            url: '/admin/api/upload',
+            multiple: false,
+            before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#pics2').append('<img src="' + result + '" alt="' + file.name + '" height="200" class="layui-upload-img">');
+
+                    $('#pics2 img').unbind("click");
+                    $('#pics2 img').bind("click", function () {
+
+                        var index = $(this).index();
+                        $.modalConfirm("是否要删除当前图片", function (obj) {
+                            $('#pics2 img').eq(index).remove();
+                        })
+                    });
+
+                });
+            },
+
+            done: function (res, index) {
+                //上传完毕
+                $('#pics2 img').last().attr("data-src", res.Key);
+            }
+        });
+
+        //多图片上传
+        upload.render({
+            elem: '#btnUpload3',
+            url: '/admin/api/upload',
+            multiple: false,
+            before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#pics3').append('<img src="' + result + '" alt="' + file.name + '" height="200" class="layui-upload-img">');
+
+                    $('#pics3 img').unbind("click");
+                    $('#pics3 img').bind("click", function () {
+
+                        var index = $(this).index();
+                        $.modalConfirm("是否要删除当前图片", function (obj) {
+                            $('#pics3 img').eq(index).remove();
+                        })
+                    });
+                });
+            }
+            , done: function (res) {
+                //上传完毕
+                $('#pics3 img').last().attr("data-src", res.Key);
+            }
+        });
+
+
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            var postData = $("#submitForm").getJson();
+ 
+
+            $.submitForm({
+                url: "/Admin/Set/Save",
+                data: postData,
+                success: function (result) {
+
+                }
+            })
+        });
+
+
+        $("#btnCancel").click(function () {
+            location.url = "/Admin/village/village";
+        });
+
+        //设置地图
+        var lat = parseFloat($("#Lat").val());
+        var lng = parseFloat($("#Lng").val());
+        var zoom = parseFloat($("#Zoom").val());
+
+        if ($("#Lat").val() != "" && $("#Lng").val() != "" && $("#Zoom").val() != "") {
+            var loc = new qq.maps.LatLng(lat, lng);
+            addMarker(loc);
+            map.setCenter(loc);
+            map.zoomTo(zoom);
+        }
+
+
+    });
+
+</script>

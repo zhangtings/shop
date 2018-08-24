@@ -1,0 +1,188 @@
+﻿
+@using CZ.Models;
+@model CZ.Models.CategoryDTO
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+    <link rel="stylesheet" type="text/css" href="/content/m.farm/css/m.farm.css?2" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/home.css" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/core.css" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/icon.css" />
+    <script src="/content/m.farm/js/flexible.js"></script>
+    <script src="/content/shopjs/jquery.min.js" type="text/javascript"></script>
+    <style>
+        dt, dt:hover {
+            text-decoration: none;
+            color: black
+        }
+
+            dt.li-active:hover {
+                color: black
+            }
+
+        .leftMenu {
+            width: 100%;
+            list-style: none;
+            text-align: center;
+            margin-top: 0px;
+        }
+
+            .leftMenu dt {
+                line-height: 1.5rem;
+                font-size: 0.3rem;
+            }
+
+        .li-active {
+            background-color: white;
+            box-shadow: 0px 0px 0px #EFEFEF;
+            border-right: none;
+            padding: 0
+        }
+
+        .leftDiv {
+            float: left;
+            width: 25%;
+            height: auto;
+            min-height: 800px;
+            background: #f3f5f7;
+        }
+
+        .rightDiv {
+            float: left;
+            height: auto;
+            width: 73%;
+            min-height: 500px;
+            margin: 0 auto;
+            padding-left: 5px;
+            background: white
+        }
+
+        .tab {
+            width: 100%;
+            height: auto;
+            display: none
+        }
+
+            .tab li {
+                margin: 1% 0.5% 0.5%;
+                float: left;
+                padding-bottom: 1%;
+                position: relative;
+                display: block;
+                padding-left:0.3rem;
+                box-sizing: border-box;
+                text-align: center;
+                width: 32%;
+                height: 3rem;
+            }
+
+        .tab-active {
+            display: block
+        }
+
+        .myContent {
+            width: 100%;
+            height: auto;
+            min-height: 800px;
+            margin-top:1rem;
+        }
+    </style>
+    <script>
+        $(window).load(function () {
+            $(".leftMenu dt").eq(0).click();
+        })
+
+        $(function () {
+            $(".leftMenu dt").click(function () {
+                var $this = this;
+                $($('.leftMenu dt')).each(function (i, el) {
+                    var tab = $('.rightDiv .tab').eq(i);
+                    if ($this == el) {
+                        $($this).addClass('li-active');
+                        tab.addClass('tab-active');
+                    } else {
+                        $(el).removeClass('li-active');
+                        tab.removeClass('tab-active');
+                    }
+                })
+            });
+        });
+    </script>
+</head>
+<body>
+    <header class="aui-header-default aui-header-fixed aui-header-bg">
+        <a href="javascript:history.back(-1)" class="aui-header-item">
+            <i class="aui-icon aui-icon-back-white"></i>
+        </a>
+        <div class="aui-header-center aui-header-center-clear">
+            <div class="aui-header-center-logo">
+                <div class="aui-car-white-Typeface">产品分类</div>
+            </div>
+        </div>
+        <a href="#" class="aui-header-item-icon">
+            
+        </a>
+    </header>
+    <div class="myContent">
+        <div class="leftDiv">
+            <dl class="leftMenu">
+                @{
+                    List<CategoryDTO> dTOs = ViewBag.Categores;
+                    int bjid =int.Parse( ViewBag.bjid);
+                    if (ViewBag.Categores != null)
+                    {
+
+                        foreach (var items in from a in dTOs where a.Tid == bjid orderby a.Sort select a)
+                        {
+                            <dt>
+                                @items.Name
+                            </dt>
+
+                        }
+                    }
+                }
+            </dl>
+        </div>
+        <div class="rightDiv">
+            @{
+                if (ViewBag.Categores != null)
+                {
+
+                    foreach (var items in from a in dTOs where a.Tid == bjid orderby a.Sort select a)
+                    {
+                        <ul class="tab">
+                            @foreach (var item in from c in dTOs where c.Tid == items.Id orderby c.Sort select c)
+                            {
+                                <li>
+                                    <a href="/wfxshoping/Product/ShowList?cid=@item.Id" style="text-decoration: none;color:black">
+                                        <img src="http://shop.571400yb.com/Data/@item.Bz_1" style="width:2rem;height:2rem" /><p style="text-align:center"> @item.Name</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                }
+            }
+        </div>
+    </div>
+    <ul class="nav">
+        <li class="nav1" onclick="location.href='/wfxShoping/Main/Index'"><span>首页</span></li>
+        <li class="nav2" onclick="location.href='/wfxShoping/Category/Index'"><span>分类</span></li>
+        <li class="sb hover"><span>商城</span></li>
+        <li class="nav5" onclick="location.href='/wfxShoping/User/ShopCar'"><span>购物车</span></li>
+        <li class="nav4" onclick="location.href='/wfxShoping/User/MyShop'"><span>我的</span></li>
+    </ul>
+</body>
+</html>
+
+

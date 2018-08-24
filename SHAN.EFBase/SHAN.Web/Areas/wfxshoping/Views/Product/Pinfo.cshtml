@@ -1,0 +1,339 @@
+﻿
+@using CZ.Models;
+@model CZ.Models.ProductDTO
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>业主超市</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+    <link rel="stylesheet" type="text/css" href="/content/m.farm/css/m.farm.css?2" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/home.css" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/core.css" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/icon.css" />
+    <script src="/content/m.farm/js/flexible.js"></script>
+    <script src="/content/shopjs/jquery.min.js" type="text/javascript"></script>
+    <script src="/content/shopjs/aui.js"></script>
+    <script src="/content/shopjs/aui-down.js"></script>
+    <style>
+        .model_bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(0,0,0,.6);
+            z-index: 999;
+            display: none;
+        }
+        .aui-car-box-list1 {
+            position: fixed;
+            display: none;
+            bottom: 0;
+            left: 0;
+            top:50%;
+            z-index: 9999;
+            width: 100%;
+            border: 1px solid #aeaeae;
+            border-radius: 3px;
+            background: #fff;
+        }
+            .aui-car-box-list1 .closeModel {
+                float: right;
+                cursor: pointer;
+                padding-right:0.2rem;
+                padding-top:0.2rem;
+            }
+    </style>
+  
+</head>
+<body>
+    <header class="aui-header-default aui-header-fixed aui-header-bg">
+        <a href="javascript:history.back(-1)" class="aui-header-item">
+            <i class="aui-icon aui-icon-back-white"></i>
+        </a>
+        <div class="aui-header-center aui-header-center-clear">
+            <div class="aui-header-center-logo">
+                <div id="scrollSearchPro" style="display: block">
+                    <span class="current">商品</span>
+                    <span>详情</span>
+                </div>
+            </div>
+        </div>
+        <a href="javascript:;" class="aui-header-item-icon select" style="min-width:25%;">
+            <i class="aui-icon aui-icon-share-pd selectVal" onselectstart="return false"></i>
+            <div class="aui-header-drop-down selectList">
+                <div class="aui-header-drop-down-san"></div>
+                <div class="">
+                    <p class="" onclick="location='#'">首页</p>
+                    <!--<p class="" onclick="location='#'">消息</p>
+    <p class="" onclick="location='#'">帮助</p>
+    <p class="" onclick="location='#'">分享</p>-->
+                </div>
+            </div>
+        </a>
+    </header>
+
+    <form id="form1" name="form1" action="/wfxshoping/User/PayNow" method="post">
+        @Html.HiddenFor(r => r.Id)
+        <input type="hidden" name="num" id="num" value="1" />
+    </form>
+
+    <div class="aui-banner-content aui-fixed-top" data-aui-slider>
+        <div class="aui-banner-wrapper">
+            @{
+                if (!string.IsNullOrEmpty(Model.photo_string) && Model.photo_string.Length > 0)
+                {
+                    foreach (var item in Model.photo_string.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        <div class="aui-banner-wrapper-item">
+                            <a href="#">
+                                <img src="http://shop.571400yb.com/Data/@item" style="height:50%;width:100%">
+                            </a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="aui-banner-wrapper-item">
+                        <a href="#">
+                            <img src="http://shop.571400yb.com/Data/@Model.Photo_d">
+                        </a>
+                    </div>
+                }
+            }
+
+
+        </div>
+        <div class="aui-banner-pagination"></div>
+    </div>
+    <div class="aui-product-content">
+
+        <div class="aui-product-title">
+            <h2>
+                @Model.Name
+            </h2>
+            <p>
+
+            </p>
+        </div>
+        <div class="aui-real-price clearfix">
+            <span>
+                <i>￥</i>@Model.Price_yh
+            </span>
+            <del><span class="aui-font-num">￥>@Model.Price</span></del>
+            <div class="aui-settle-choice">
+                <span>优惠价</span>
+            </div>
+        </div>
+
+        <div class="aui-dri"></div>
+        <div class="aui-product-evaluate">
+            <a href="#" class="aui-address-cell aui-fl-arrow aui-fl-arrow-clear">
+                <div class="aui-address-cell-bd">商品评价   <em>(9)</em></div>
+                <div class="aui-address-cell-ft">
+                    <span>好评 100%</span>
+                </div>
+            </a>
+        </div>
+        <div class="aui-dri"></div>
+        <div class="aui-product-pages">
+            <div class="aui-product-pages-title">
+                <h2>图文详情</h2>
+            </div>
+            <div class="aui-product-pages-img">
+                @Html.Raw(Model.Content)
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="aui-footer-product">
+        <div class="aui-footer-product-fixed">
+            <div class="aui-footer-product-concern-cart">
+                <a href="/wfxShoping/Category/Index">
+                    <span class="aui-f-p-icon"><img src="~/content/m.farm/images/farm_20.png" alt=""></span>
+                    <span class="aui-f-p-focus-info">分类</span>
+                </a>
+                <a href="/wfxShoping/User/ShopCar">
+                    <span class="aui-f-p-icon"><img src="/content/shopcss/img/icon/icon-sc.png" alt=""></span>
+                    <span class="aui-f-p-focus-info">购物车</span>
+                </a>
+
+            </div>
+            <div class="aui-footer-product-action-list">
+                <a href="javascript:addToCarCS(@Model.Id)" class="yellow-color">加入购物车</a>
+                <a href="javascript:buyNow1()" class="red-color">立即购买</a>
+            </div>
+        </div>
+    </footer>
+    
+    <section class="model_bg"></section>
+    <section class="aui-car-box-list1">
+        <p style="height:0.8rem"><span class="closeModel">X</span></p>
+        <div class="aui-car-box-list" >
+            <ul>
+                <li>
+                    <div class="aui-car-box-list-item" style="background:#fff">
+                        <div class="aui-car-box-list-img">
+                            <a href="#">
+                                <img src="http://shop.571400yb.com/Data/@Model.Photo_x" alt="">
+                            </a>
+                        </div>
+                        <div class="aui-car-box-list-text">
+                            <h4>
+                                <a href="#">@Model.Name</a>
+                                <input type="hidden" id="pid" name="pid" value="@Model.Id" />
+                            </h4>
+                            <div class="aui-car-box-list-text-brief">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="aui-car-box-list-text-price">
+                                <div class="aui-car-box-list-text-pri">
+                                    ￥<b class="price">@(Model.Price_yh > 0 ? Model.Price_yh : Model.Price)</b>
+                                    @{if (Model.Price_yh > 0)
+                                        {
+                                            <del style="color: #999;font-size: .2rem;">  @Model.Price</del>
+                                        }
+                                    }
+                                </div>
+                                <div class="aui-car-box-list-text-arithmetic">
+                                    <a href="javascript:;" class="minus">-</a>
+                                    <span class="num">1</span>
+                                    <a href="javascript:;" class="plus">+</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="aui-footer-product-fixed red-color">
+            <a href="javascript:buyNow()" style="font-size:0.5rem;color:#fff;line-height:50px">立即购买</a>
+        </div>
+    </section>
+
+    <script>
+        $(function () {
+            //绑定滚动条事件
+            //绑定滚动条事件
+            $(window).bind("scroll", function () {
+                var sTop = $(window).scrollTop();
+                var sTop = parseInt(sTop);
+                //if (sTop >= 100) {
+                //    if (!$("#scrollSearchPro").is(":visible")) {
+                //        try {
+                //            $("#scrollSearchPro").slideDown();
+                //        } catch (e) {
+                //            $("#scrollSearchPro").show();
+                //        }
+                //    }
+                //}
+                //else {
+                //    if ($("#scrollSearchPro").is(":visible")) {
+                //        try {
+                //            $("#scrollSearchPro").slideUp();
+                //        } catch (e) {
+                //            $("#scrollSearchPro").hide();
+                //        }
+                //    }
+                //}
+            });
+        })
+        function addToCar(pid) {
+            var url = '/wfxshoping/User/AddToCar?pid=' + pid;
+            //var rows = { 'pid': [pid] };
+            $.ajax({
+                url: url,
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (result) {
+                    alert(result.Text);
+                    location.href = location.href;
+                }
+            });
+
+        };
+
+        function addToCarCS(pid) {
+            var url = '/wfxshoping/User/AddToCarCS';
+            var rows = {};
+            rows['Id'] = pid;
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: rows,
+                //$.toJSON
+                success: function (result) {
+                    alert(result.Text);
+                    //location.href = location.href;
+                }
+            });
+
+        };
+
+        function buyNow1() {
+            $('.model_bg').fadeIn(300);
+            $('.aui-car-box-list1').fadeIn(300);
+        }
+
+        function buyNow() {
+            $("#num").val($(".num").text());
+            $("form").submit();
+        }
+
+        $('.closeModel').click(function () {
+            closeM();
+        });
+        function closeM() {
+            $('.model_bg').fadeOut(300);
+            $('.aui-car-box-list1').fadeOut(300);
+        }
+
+        !function ($) {
+            var $myAs = $('#J_ActionSheet');
+
+            $('#J_ShowActionSheet').on('click', function () {
+                $myAs.actionSheet('open');
+            });
+
+            $('#J_Cancel').on('click', function () {
+                $myAs.actionSheet('close');
+            });
+
+        }(jQuery);
+
+        $(".minus").click(function () {
+            var t = $(this).parent().find('.num');
+            t.text(parseInt(t.text()) - 1);
+            if (t.text() <= 1) {
+                t.text(1);
+            }
+        });
+
+        $(".plus").click(function () {
+            var t = $(this).parent().find('.num');
+            t.text(parseInt(t.text()) + 1);
+            if (t.text() <= 1) {
+                t.text(1);
+            }
+        });
+
+    </script>
+
+
+</body>
+
+
+
+</html>

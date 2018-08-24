@@ -1,0 +1,60 @@
+﻿@{
+    Layout = null;
+}
+@model CZ.Models.Common.Message<List<CZ.Models.WXShopCategoryDTO>>
+ 
+<table class="layui-table">
+        <colgroup>
+            <col width="50">
+            <col>
+            <col>
+            <col>
+            <col>
+        </colgroup>
+        <thead>
+            <tr>
+                <th><input type="checkbox" name="allChoose" lay-skin="primary" lay-filter="allChoose"></th>
+                <th>编号</th>
+                <th>分类名称</th>
+                <th>上级分类</th>
+                <th></th> 
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Model.Data != null&& Model.Data.Count>0)
+                {
+                    foreach (var item in Model.Data)
+                    {
+                        <tr>
+                            <td><input type="checkbox" name="ID" lay-skin="primary" value="@item.ID" ></td>
+                            <td>@item.ID</td>
+                            <td>@item.Title</td>
+                            <td>@item.Parent_name</td>
+                            <th></th> 
+                            <td></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                       <tr> 
+                            <td colspan="14" align="center">暂无数据</td> 
+                        </tr>
+                }
+            }
+        </tbody>
+    </table> 
+@{
+    if (Model.Pager != null)
+    {
+<div id="pager" data-total="@Model.Pager.Total" data-currentpage="@Model.Pager.CurrentPage" data-pagenum="@Model.Pager.PageNum" ></div>
+        }
+    }
+
+
+
+
+
+

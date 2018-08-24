@@ -1,0 +1,133 @@
+﻿
+@using CZ.Models;
+@model CZ.Models.OrderDTO
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>业主超市</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+    <link rel="stylesheet" type="text/css" href="/content/m.farm/css/m.farm.css?2" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/home.css" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/core.css" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/icon.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/mall/css/loaders.min.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/mall/css/loading.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/mall/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/mall/css/style.css" />
+    <script src="/content/m.farm/js/flexible.js"></script>
+    <script src="/Content/mall/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+    <header class="aui-header-default aui-header-fixed aui-header-bg">
+        <a href="javascript:history.back(-1)" class="aui-header-item">
+            <i class="aui-icon aui-icon-back-white"></i>
+        </a>
+        <div class="aui-header-center aui-header-center-clear">
+            <div class="aui-header-center-logo">
+                <div class="aui-car-white-Typeface">订单列表</div>
+            </div>
+        </div>
+        <a href="#" class="aui-header-item-icon">
+
+        </a>
+    </header>
+
+    <div class="contaniner" style="margin-top: 1rem;">
+        <section class="order">
+            @{
+                List<OrderDTO> dTOs = ViewBag.Orders;
+                foreach (var o in dTOs)
+                {
+            <dl>
+                <dt>
+                    <time style="float: left;">@o.AddTime</time>
+                    @{if (o.Status == 10)
+                        {
+                            <span>待付款</span>
+                        }
+                        else if (o.Status == 20)
+                        {
+                            <span>待发货</span>
+                        }
+                        else if (o.Status == 30)
+                        {
+                            <span>待收货</span>
+                        }
+                        else if (o.Status == 40)
+                        {
+                            <span>待评价</span>
+                        }
+                        else
+                        {
+                            <span>订单关闭</span>
+                        }
+                    }
+                </dt>
+                @{
+                    foreach (var p in o.OrderProducts)
+                    {
+                        <ul>
+                            <a href="/wfxShoping/User/OrderInfo?id=@o.Id">
+                                <figure><img src="http://shop.571400yb.com/Data/@p.Photo_x" style="width:100px;height:100px" /></figure>
+                                <li>
+                                    <p>@p.Name</p>
+                                    <small></small>
+                                    <span></span>
+                                    <b>￥@p.Price</b>
+                                    <strong>×@p.Num</strong>
+                                </li>
+                            </a>
+                        </ul>
+
+                    }
+                }
+
+                <dd>
+                    <h3>商品总额</h3>
+                    <i>￥@(o.Status==20?o.Price_h:o.Price)</i>
+                </dd>
+                @{ if (o.Status == 20) { 
+                    <dd>
+                        <h5>买家留言:@o.Remark</h5>
+                    </dd>
+                    }
+                }
+                <dd>
+                    <a href="/wfxshoping/User/OrderInfo?id=@o.Id">
+                        <input type="button" value="订单详情" />
+                    </a>
+                    @{ if (o.Status == 10)
+                        {<input type="button" value="取消订单" onclick="javascript:location.href='/wfxShoping/User/OrderEdit?id=@o.Id&&status=0'" />}
+                    }
+                    @{ if (o.Status == 30 )
+                        {<input type="button" value="确认收货" class="order-que" onclick="javascript:location.href='/wfxShoping/User/OrderEdit?id=@o.Id&&status=40'" />}
+                    }
+                </dd>
+            </dl>
+                }
+            }
+
+        </section>
+        <div style="margin-bottom: 9%;"></div>
+    </div>
+
+    <ul class="nav">
+        <li class="nav1" onclick="location.href='/wfxShoping/Main/Index'"><span>首页</span></li>
+        <li class="nav2" onclick="location.href='/wfxShoping/Category/Index'"><span>分类</span></li>
+        <li class="sb hover"><span>商城</span></li>
+        <li class="nav5" onclick="location.href='/wfxShoping/User/ShopCar'"><span>购物车</span></li>
+        <li class="nav4" onclick="location.href='/wfxShoping/User/MyShop'"><span>我的</span></li>
+    </ul>
+
+
+
+</body>
+
+</html>

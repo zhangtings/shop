@@ -1,0 +1,68 @@
+﻿
+@using CZ.Models;
+@model CZ.Models.ProductDTO
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>业主超市</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+    <link rel="stylesheet" type="text/css" href="/content/m.farm/css/m.farm.css?2" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/home.css" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/core.css" />
+    <link rel="stylesheet" type="text/css" href="/content/shopcss/icon.css" />
+    <link rel="stylesheet" type="text/css" href="/content/m.farm/css/m.farm.css?2" />
+    <script src="/content/m.farm/js/flexible.js"></script>
+    <script src="/content/m.farm/js/jquery-1.8.3.min.js"></script>
+    <style>
+    </style>
+</head>
+<body style="padding-bottom:2.2rem">
+    <header class="aui-header-default aui-header-fixed aui-header-bg">
+        <a href="javascript:history.back(-1)" class="aui-header-item">
+            <i class="aui-icon aui-icon-back-white"></i>
+        </a>
+        <div class="aui-header-center aui-header-center-clear">
+            <div class="aui-header-center-logo">
+                <div class="aui-car-white-Typeface">商品列表</div>
+            </div>
+        </div>
+        <a href="#" class="aui-header-item-icon">
+
+        </a>
+    </header>
+    <div class="aui-car-content">
+        <ul class="wall">
+            @{
+                List<ProductDTO> dTOs = ViewBag.Products;
+                foreach (var item in dTOs)
+                {
+
+                    <li class="pic">
+                        <a href="/wfxshoping/Product/Pinfo?pid=@item.Id">
+                            <img src="http://shop.571400yb.com/Data/@item.Photo_x" />
+                            <p>@item.Name</p>
+                            <b>￥@item.Price_yh</b><del>￥@item.Price</del>
+                        </a>
+                    </li>
+
+                }
+            }
+
+        </ul>
+    </div>
+    <ul class="nav">
+        <li class="nav1" onclick="location.href='/wfxShoping/Main/Index'"><span>首页</span></li>
+        <li class="nav2" onclick="location.href='/wfxShoping/Category/Index'"><span>分类</span></li>
+        <li class="sb hover"><span>商城</span></li>
+        <li class="nav5" onclick="location.href='/wfxShoping/User/ShopCar'"><span>购物车</span></li>
+        <li class="nav4" onclick="location.href='/wfxShoping/User/MyShop'"><span>我的</span></li>
+    </ul>
+</body>
+
+</html>

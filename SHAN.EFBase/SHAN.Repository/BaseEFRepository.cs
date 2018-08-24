@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using SHAN.Entity;
 
 namespace SHAN.Repository
@@ -63,9 +67,47 @@ namespace SHAN.Repository
             return _dbContext.SaveChanges();
         }
 
+        //public int Update(TEntity entity, bool isSave)
+        //{
+        //    _dbContext.Set<TEntity>().AddOrUpdate(entity);
+        //    return _dbContext.SaveChanges();
+        //}
+
+
         public int Update(TEntity entity, bool isSave)
         {
-            _dbContext.Set<TEntity>().AddOrUpdate(entity);
+            DbSet<TEntity> dbSet = _dbContext.Set<TEntity>();
+            DbEntityEntry<TEntity> entry = _dbContext.Entry(entity);
+            try
+            {
+
+                if (entry.State == EntityState.Detached)
+                {
+                    dbSet.Attach(entity);
+                    entry.State = EntityState.Modified;
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                PropertyInfo key = entity.GetType().GetProperties().FirstOrDefault(r => r.GetCustomAttributes(typeof(KeyAttribute), false) != null);
+                TEntity oldEntity = dbSet.Find(key.GetValue(entity));
+                var xx = _dbContext.Entry(oldEntity).State;
+                _dbContext.Entry(oldEntity).CurrentValues.SetValues(entity);
+                xx = _dbContext.Entry(oldEntity).State;
+                foreach (PropertyInfo p in oldEntity.GetType().GetProperties())
+                {
+                    var diyi = _dbContext.Entry<TEntity>(oldEntity);
+                    var dier = diyi.Property(p.Name);
+                    var disan = dier.IsModified;
+                    if (p.Name == "Addtime" || p.GetValue(oldEntity) == null)
+                    {
+                        dier.IsModified = false;
+                    }
+                }
+            }
+
+            //var set = _dbContext.Set<TEntity>();
+            //set.AddOrUpdate(entity);
             return _dbContext.SaveChanges();
         }
 

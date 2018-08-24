@@ -1,0 +1,349 @@
+﻿
+@{ 
+    Layout = "~/Areas/Admin/Views/Shared/_Layout_Form.cshtml";
+}
+
+@model CZ.Models.HotelDTO
+
+<header>
+    <span class="layui-breadcrumb">
+        <a href="/Admin/Main/Default">首页</a>
+        <a href="/Admin/Hotel/Hotel">民宿管理</a>
+        <a><cite>新增民宿</cite></a>
+    </span>
+</header>
+
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">基本信息</li>
+        <li>轮播图</li>
+        <li>产品图</li> 
+        <li>位置信息</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show"><blockquote class="layui-elem-quote">
+    注意：请根据网点距离设置任务时长。
+</blockquote>
+
+<form class="layui-form layui-form-pane" id="submitForm">
+
+    <div class="layui-form-item">
+        @Html.HiddenFor(r => r.ID)
+        <label class="layui-form-label">民宿名称</label>
+        <div class="layui-input-inline w500">
+            <input class="layui-input" id="Title" name="Title" type="text" value="@Model.Title" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label ">民宿地址</label>
+        <div class="layui-input-inline w600">
+            <input class="layui-input" id="Address" name="Address" type="text" value="@Model.Address" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label ">电话</label>
+        <div class="layui-input-inline w600">
+            <input class="layui-input" id="Tel" name="Tel" type="text" value="@Model.Tel" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label ">区域</label>
+        <div class="layui-input-inline w500">
+            <input class="layui-input" id="Area" name="Area" placeholder="如：琼海、" type="text" value="@Model.Area" lay-verify="required">
+        </div>
+    </div> 
+
+    <div class="layui-form-item">
+        <label class="layui-form-label ">标签</label>
+        <div class="layui-input-inline w500">
+            <input class="layui-input" id="Tags" name="Tags" placeholder="如：琼海、" type="text" value="@Model.Tags" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label ">全景网址</label>
+        <div class="layui-input-inline w500">
+            <input class="layui-input" id="Quan" name="Quan" placeholder="如：琼海、" type="text" value="@Model.Quan" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label ">简介</label>
+        <div class="layui-input-inline w500">
+            @Html.TextAreaFor(r => r.Des, new { @class = "layui-input", style = "height:100px;" })
+        </div>
+    </div>
+        @Html.HiddenFor(r => r.Lat)
+        @Html.HiddenFor(r => r.Lng)
+        @Html.HiddenFor(r => r.Zoom) 
+        @Html.HiddenFor(r => r.Pic) 
+        @Html.HiddenFor(r => r.ProductPic) 
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" type="button" id="btnSave" lay-submit="" lay-filter="demo1">保 存</button>
+            <button class="layui-btn layui-btn-danger cancel" id="btnCancel"  type="button">取 消</button>
+        </div>
+    </div>
+
+</form>  
+        </div>
+
+        <div class="layui-tab-item">
+        
+
+            <blockquote class="layui-elem-quote">
+                注意：轮播图是顶部展示的图片。
+            </blockquote>
+
+<div class="layui-upload">
+    <button type="button" class="layui-btn" id="btnUpload2">轮播图上传</button>
+    <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+        预览图：
+        <div class="layui-upload-list" id="pics2">
+            @{ 
+                if (!string.IsNullOrEmpty(Model.Pic))
+                {
+                    foreach (var item in Model.Pic.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        <img src="@item" data-src="@item" height="200" />
+                        }
+                    }
+                }
+
+        </div>
+    </blockquote>
+</div>
+        
+        </div>
+        <div class="layui-tab-item">
+        
+            <blockquote class="layui-elem-quote">
+                注意：产品图是中间展示的轮播图。
+            </blockquote>
+
+<div class="layui-upload">
+    <button type="button" class="layui-btn" id="btnUpload3">产品图上传</button>
+    <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+        预览图：
+        <div class="layui-upload-list" id="pics3">
+            @{
+                if (!string.IsNullOrEmpty(Model.ProductPic))
+                {
+                    foreach (var item in Model.ProductPic.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        <img src="@item" data-src="@item" height="200" />
+                    }
+                }
+            }
+        </div>
+    </blockquote>
+</div></div>
+        <div class="layui-tab-item">
+            <blockquote class="layui-elem-quote">
+                操作提示， 单击：添加标注、鼠标滚轮：放大或者缩小、可直接输入地址查询快速定位。
+            </blockquote>
+            <div class="layui-form-item">
+                <label class="layui-form-label">地址查询</label>
+                <div class="layui-input-inline" style="width:600px;">
+                    <input type="text" id="mapAddress" autocomplete="off" placeholder="请输入位置进行查询" class="layui-input">
+                </div>
+                <div class="layui-input-inline">
+                    <button class="layui-btn" onclick="codeAddress();">查询</button> 
+                </div>
+
+
+             
+            </div>
+            <div class="layui-form-item"> 
+                    <div id="container" style="width:784px; height:400px; background-color:bisque;">
+                    </div> 
+            </div>
+            </div>
+
+
+    </div>
+</div>
+ 
+ 
+
+<script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
+
+<script>
+
+    var imgid = "";
+    var geocoder, map, marker = null, markersArray = [];
+
+    var init = function () {
+        var center = new qq.maps.LatLng(19.256053019664275, 110.47405242919922);
+        map = new qq.maps.Map(document.getElementById('container'), {
+            center: center,
+            zoom: 15
+        });
+
+        //调用地址解析类
+        geocoder = new qq.maps.Geocoder({
+            complete: function (result) {
+                map.setCenter(result.detail.location);
+                map.zoomTo(15);
+                addMarker(result.detail.location);
+            }
+        });
+
+        //添加监听事件  获取鼠标点击事件
+        qq.maps.event.addListener(map, 'click', function (event) {
+            clearOverlays();
+            addMarker(event.latLng);
+        });
+    };
+
+
+    //添加标记
+    function addMarker(location) {
+        var marker = new qq.maps.Marker({
+            position: location,
+            map: map
+        });
+        markersArray.push(marker);
+
+        $("#Lat").val(marker.getPosition().getLat());
+        $("#Lng").val(marker.getPosition().getLng());
+        $("#Zoom").val(map.getZoom());
+
+    }
+
+    //清除覆盖层
+    function clearOverlays() {
+        if (markersArray) {
+            for (i in markersArray) {
+                markersArray[i].setMap(null);
+            }
+        }
+    }
+
+    function codeAddress() {
+        var address = document.getElementById("mapAddress").value;
+        //通过getLocation();方法获取位置信息值
+        geocoder.getLocation(address);
+    }
+
+
+
+
+    layui.use(['form', 'layer', "element", "upload"], function () {
+        var form = layui.form;
+        var layer = layui.layer;
+        var element = layui.element;
+        var upload = layui.upload;
+
+
+        init();
+
+
+        //多图片上传
+        upload.render({
+            elem: '#btnUpload2',
+            url: '/admin/api/upload',
+            multiple: false,
+            before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#pics2').append('<img src="' + result + '" alt="' + file.name + '" height="200" class="layui-upload-img">');
+
+                    $('#pics2 img').unbind("click");
+                    $('#pics2 img').bind("click", function () {
+
+                        var index = $(this).index();
+                        $.modalConfirm("是否要删除当前图片", function (obj) {
+                            $('#pics2 img').eq(index).remove();
+                        })
+                    });
+
+                });
+            },
+
+            done: function (res, index) {
+                //上传完毕
+                $('#pics2 img').last().attr("data-src", res.Key);
+            }
+        });
+
+        //多图片上传
+        upload.render({
+            elem: '#btnUpload3',
+            url: '/admin/api/upload',
+            multiple: false,
+            before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#pics3').append('<img src="' + result + '" alt="' + file.name + '" height="200" class="layui-upload-img">');
+
+                    $('#pics3 img').unbind("click");
+                    $('#pics3 img').bind("click", function () {
+
+                        var index = $(this).index();
+                        $.modalConfirm("是否要删除当前图片", function (obj) {
+                            $('#pics3 img').eq(index).remove();
+                        })
+                    });
+                });
+            }
+            , done: function (res) {
+                //上传完毕
+                $('#pics3 img').last().attr("data-src", res.Key);
+            }
+        });
+
+
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            var postData = $("#submitForm").getJson();
+
+            var pic2 = "abc";
+            $("#pics2 img").each(function () {
+                pic2 += "," + $(this).attr("data-src");
+            });
+            pic2 = pic2.replace("abc,", "").replace("abc", "");
+            postData["Pic"] = pic2; 
+
+             
+            var pic3 = "abc";
+            $("#pics3 img").each(function () {
+                pic3 += "," + $(this).attr("data-src");
+            });
+            pic3 = pic3.replace("abc,", "").replace("abc", ""); 
+            postData["ProductPic"] = pic3;
+
+            $.submitForm({
+                url: "/Admin/Hotel/HotelSave",
+                data: postData,
+                success: function (result) {
+                    location.url = "/Admin/Hotel/Hotel";
+                }
+            })
+        });
+
+
+        $("#btnCancel").click(function () {
+            location.url = "/Admin/Hotel/Hotel";
+        });
+
+        //设置地图
+        var lat = parseFloat($("#Lat").val());
+        var lng = parseFloat($("#Lng").val());
+        var zoom = parseFloat($("#Zoom").val());
+
+        if ($("#Lat").val() != "" && $("#Lng").val() != "" && $("#Zoom").val() != "") {
+            var loc = new qq.maps.LatLng(lat, lng);
+            addMarker(loc);
+            map.setCenter(loc);
+            map.zoomTo(zoom);
+        }
+
+
+    });
+
+</script>

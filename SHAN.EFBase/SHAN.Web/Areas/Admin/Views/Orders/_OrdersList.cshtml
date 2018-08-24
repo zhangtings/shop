@@ -1,0 +1,71 @@
+﻿@{
+    Layout = null;
+}
+@model CZ.Models.Common.Message<List<CZ.Models.OrdersDTO>>
+ 
+<table class="layui-table">
+        <colgroup>
+            <col width="50">
+            <col>
+            <col>
+            <col>
+            <col>
+        </colgroup>
+        <thead>
+            <tr>
+                <th><input type="checkbox" name="allChoose" lay-skin="primary" lay-filter="allChoose"></th>
+                <th>编号</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>电话 </th>
+                <th>用餐时间</th>
+                <th>预订金额</th>
+                <th>预订项目</th>
+                <th>特殊要求</th>
+                <th>支付方式</th>
+                <th>是否支付</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Model.Data != null&& Model.Data.Count>0)
+                {
+                    foreach (var item in Model.Data)
+                    {
+                        <tr>
+                            <td><input type="checkbox" name="ID" lay-skin="primary" value="@item.ID" ></td>
+                            <td>@item.ID</td>
+                            <td>@item.Name</td>
+                            <td>  @DDb.Common.EnumDescription.GetFieldText((CZ.Models.Enums.SexData)item.Sex.ToInt32())
+                                                    </td>
+                            <td>@item.Mobile</td>
+                            <td>@item.EatTime</td> 
+                            <td>@item.Jine</td> 
+                            <td>@item.ProjectName</td> 
+                            <td>@item.Remark</td>  
+                            <td>微信支付</td> 
+                            <td>@item.PayStatus</td> 
+                        </tr>
+                    }
+                }
+                else
+                {
+                       <tr> 
+                            <td colspan="14" align="center">暂无数据</td> 
+                        </tr>
+                }
+            }
+        </tbody>
+    </table> 
+@{
+    if (Model.Pager != null)
+    {
+<div id="pager" data-total="@Model.Pager.Total" data-currentpage="@Model.Pager.CurrentPage" data-pagenum="@Model.Pager.PageNum" ></div>
+        }
+    }
+
+
+
+
+
+

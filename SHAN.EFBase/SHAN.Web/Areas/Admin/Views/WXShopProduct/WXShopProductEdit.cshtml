@@ -1,0 +1,366 @@
+﻿
+@{ 
+    Layout = "~/Areas/Admin/Views/Shared/_Layout_Form.cshtml";
+}
+
+@model CZ.Models.WXShopProductDTO
+
+<header>
+    <span class="layui-breadcrumb">
+        <a href="/Admin/Main/Default">首页</a>
+        <a href="/Admin/WXShopProduct/WXShopProduct">商品</a>
+        <a><cite>新增商品</cite></a>
+    </span>
+</header>
+
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">基本信息</li>
+        <li class="layui-this">图文详情</li>
+        <li class="layui-this">佣金设置</li>
+    </ul>
+
+
+    <form class="layui-form layui-form-pane" id="submitForm">
+
+        <div class="layui-form-item">
+            @Html.HiddenFor(r => r.ID)
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-inline w600">
+                <input class="layui-input" id="ProductName" name="ProductName" type="text" value="@Model.ProductName" lay-verify="required">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品类别</label>
+            <div class="layui-input-inline w600">
+                @Html.DropDownListFor(m => m.CategoryId, new SelectList(@ViewBag.Categories, "Id", "Title"))
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">库存单元，货号</label>
+            <div class="layui-input-inline w600">
+                <input class="layui-input" id="Sku" name="Sku" type="text" value="@Model.Sku">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">简单介绍</label>
+            <div class="layui-input-inline w600">
+                <input class="layui-input" id="ShortDesc" name="Link_url" type="text" value="@Model.ShortDesc">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">计量单位</label>
+            <div class="layui-input-inline w600">
+                <input class="layui-input" id="Unit" name="Unit" type="text" value="@Model.Unit" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">重量</label>
+            <div class="layui-input-inline w600">
+                <input class="layui-input" id="Weight" name="Weight" type="text" value="@Model.Weight" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">描述</label>
+            <div class="layui-input-inline w600">
+                <input class="layui-input" id="Description" name="Description" type="text" value="@Model.Description" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">SEO标题</label>
+            <div class="layui-input-inline w600">
+                <input class="layui-input" id="Seo_title" name="Seo_title" type="text" value="@Model.Seo_title" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">SEO关键词</label>
+            <div class="layui-input-inline w600">
+                <input class="layui-input" id="Seo_keywords" name="Seo_keywords" type="text" value="@Model.Seo_keywords" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">SEO描述</label>
+            <div class="layui-input-inline w600">
+                <input class="layui-input" id="Seo_description" name="Seo_description" type="text" value="@Model.Seo_description" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品主题</label>
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="btnUpload2">上传图片</button>
+                <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                    <div class="layui-upload-list" id="pics2">
+                        @{
+                            if (!string.IsNullOrEmpty(Model.FocusImgUrl))
+                            {
+                                foreach (var item in Model.FocusImgUrl.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+                                {
+                                    <img src="@item" data-src="@item" height="200" />
+                                }
+                            }
+                        }
+                    </div>
+                </blockquote>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">缩略图</label>
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="btnUpload3">上传图片</button>
+                <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                    <div class="layui-upload-list" id="pics3">
+                        @{
+                            if (!string.IsNullOrEmpty(Model.ThumbnailsUrll))
+                            {
+                                foreach (var item in Model.ThumbnailsUrll.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+                                {
+                                    <img src="@item" data-src="@item" height="200" />
+                                }
+                            }
+                        }
+                    </div>
+                </blockquote>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">推荐</label>
+            <div class="layui-input-inline w100">
+                <input type="checkbox" name="Recommended" lay-skin="primary" value="true" @(Model.Recommended.GetValueOrDefault()?"checked":"")>
+            </div>
+            <label class="layui-form-label ">最新</label>
+            <div class="layui-input-inline w100">
+                <input type="checkbox" name="Latest" lay-skin="primary" value="true" @(Model.Latest.GetValueOrDefault()? "checked":" ")>
+            </div>
+            <label class="layui-form-label ">最热</label>
+            <div class="layui-input-inline w100">
+                <input type="checkbox" name="Hotsale" lay-skin="primary" value="true" @(Model.Hotsale.GetValueOrDefault()?"checked":" ")>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">特价</label>
+            <div class="layui-input-inline w100">
+                <input class="layui-input" id="SpecialOffer" name="SpecialOffer" type="text" value="@Model.SpecialOffer" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">成本</label>
+            <div class="layui-input-inline w100">
+                <input class="layui-input" id="CostPrice" name="CostPrice" type="text" value="@Model.CostPrice" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">市场价</label>
+            <div class="layui-input-inline w100">
+                <input class="layui-input" id="MarketPrice" name="MarketPrice" type="text" value="@Model.MarketPrice" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">销售价</label>
+            <div class="layui-input-inline w100">
+                <input class="layui-input" id="SalePrice" name="SalePrice" type="text" value="@Model.SalePrice" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">库存</label>
+            <div class="layui-input-inline w100">
+                <input class="layui-input" id="Stock" name="Stock" type="text" value="@Model.Stock" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">添加时间</label>
+            <div class="layui-input-inline w100">
+                @Model.AddDate
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">浏览次数</label>
+            <div class="layui-input-inline w100">
+                <input class="layui-input" id="Stock" name="Stock" type="text" value="@Model.VistiCounts" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">排序号</label>
+            <div class="layui-input-inline w600">
+                <input class="layui-input" id="Sort_id" name="Sort_id" type="text" value="@Model.Sort_id" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">生产日期</label>
+            <div class="layui-input-inline w600">
+                <input class="layui-input" id="ProductionDate" name="ProductionDate" type="text" value="@Model.ProductionDate" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">有效期最后日期</label>
+            <div class="layui-input-inline w600">
+                <input class="layui-input" id="Sort_id" name="Sort_id" type="text" value="@Model.ExpiryEndDate" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">修改日期</label>
+            <div class="layui-input-inline w600">
+                @Model.ExpiryEndDate
+            </div>
+        </div>
+
+        @Html.HiddenFor(r => r.FocusImgUrl)
+        @Html.HiddenFor(r => r.ThumbnailsUrll)
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" type="button" id="btnSave" lay-submit="" lay-filter="demo1">保 存</button>
+                <button class="layui-btn layui-btn-danger cancel" id="btnCancel" type="button">取 消</button>
+            </div>
+        </div>
+
+    </form>  
+        </div>
+
+
+
+ 
+ 
+ 
+ 
+
+<script>
+
+    var imgid = ""; 
+
+    var init = function () {
+
+        $("#btnCancel").click(function () {
+
+            location.href = "/Admin/WXShopProduct/WXShopProduct";
+        });
+
+    };
+
+
+ 
+
+     
+    layui.use(['form', 'layer', "element", "upload"], function () {
+        var form = layui.form;
+        var layer = layui.layer;
+        var element = layui.element;
+        var upload = layui.upload;
+
+
+        init();
+
+
+        //多图片上传
+        upload.render({
+            elem: '#btnUpload2',
+            url: '/admin/api/upload',
+            multiple: false,
+            before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#pics2').append('<img src="' + result + '" alt="' + file.name + '" height="200" class="layui-upload-img">');
+
+                    $('#pics2 img').unbind("click");
+                    $('#pics2 img').bind("click", function () {
+
+                        var index = $(this).index();
+                        $.modalConfirm("是否要删除当前图片", function (obj) {
+                            $('#pics2 img').eq(index).remove();
+                        })
+                    });
+
+                });
+            },
+
+            done: function (res, index) {
+                //上传完毕
+                $('#pics2 img').last().attr("data-src", res.Key);
+            }
+        }); 
+
+        upload.render({
+            elem: '#btnUpload3',
+            url: '/admin/api/upload',
+            multiple: false,
+            before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#pics3').append('<img src="' + result + '" alt="' + file.name + '" height="200" class="layui-upload-img">');
+
+                    $('#pics3 img').unbind("click");
+                    $('#pics3 img').bind("click", function () {
+
+                        var index = $(this).index();
+                        $.modalConfirm("是否要删除当前图片", function (obj) {
+                            $('#pics3 img').eq(index).remove();
+                        })
+                    });
+
+                });
+            },
+
+            done: function (res, index) {
+                //上传完毕
+                $('#pics3 img').last().attr("data-src", res.Key);
+            }
+        }); 
+
+
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            var postData = $("#submitForm").getJson();
+
+            var pic2 = "abc";
+            $("#pics2 img").each(function () {
+                pic2 += "," + $(this).attr("data-src");
+            });
+            pic2 = pic2.replace("abc,", "").replace("abc", "");
+            postData["FocusImgUrl"] = pic2; 
+
+            var pic3 = "abc";
+            $("#pics3 img").each(function () {
+                pic3 += "," + $(this).attr("data-src");
+            });
+            pic3 = pic3.replace("abc,", "").replace("abc", "");
+            postData["ThumbnailsUrll"] = pic3;
+
+            $.submitForm({
+                url: "/Admin/WXShopProduct/WXShopProductSave",
+                data: postData,
+                success: function (result) {
+                    location.url = "/Admin/WXShopProduct/WXShopProduct";
+                }
+            })
+        });
+
+
+    
+
+    });
+
+</script>
