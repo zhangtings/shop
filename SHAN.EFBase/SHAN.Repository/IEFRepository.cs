@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Data.Common;
 using SHAN.Entity;
+using System.Data.Entity;
 
 namespace SHAN.Repository
 {
@@ -14,6 +15,10 @@ namespace SHAN.Repository
         ///     获取 当前实体的查询数据集
         /// </summary>
         IQueryable<TEntity> Entities { get; }
+
+        IQueryable<TEntity> 实体集 { get; }
+
+        IQueryable<TEntity> AsNoTracking { get; }
 
         #region 公共方法
 

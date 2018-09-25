@@ -4,6 +4,7 @@ using System.Linq;
 using SHAN.Service;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using StackExchange.Profiling;
 
 namespace SHAN.Web.Controllers
 {
@@ -29,13 +30,18 @@ namespace SHAN.Web.Controllers
         [HttpPost]
         public JsonResult GetList()
         {
-            List<ProductDTO> list = _ProductService.products;
+            JsonResult xx;
+            var profiler = MiniProfiler.Current;
+            using (profiler.Step("获取Product列表")) { 
+                List<ProductDTO> list = _ProductService.products;
             var json = new
             {
                 total = list.Count,
                 rows = list.ToArray()
             };
-            var xx = Json(json, JsonRequestBehavior.AllowGet);
+            
+                xx = Json(json, JsonRequestBehavior.AllowGet);
+            }
             return xx;
         }
         [HttpPost]

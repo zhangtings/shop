@@ -1,4 +1,10 @@
 ﻿@using SHAN.Service;
+@using StackExchange.Profiling;
+@using StackExchange.Profiling.Mvc
+@{
+    // allows us to test out starting a profiler hidden - use ALT + P to toggle display of results
+    var startHidden = !string.IsNullOrEmpty(Request.QueryString["startHidden"]);
+}
 @{
     Layout = null;
 
@@ -16,7 +22,7 @@
     @Scripts.Render("~/bundles/locale")
 </head>
 <body class="easyui-layout">
-    <div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;padding:10px">north region</div>
+    <div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;padding:10px">north region<img src="~/Content/Images/Logo.png"></div>
     <div data-options="region:'west',split:true,title:'West'" style="width:150px;padding:10px;">
         <div class="easyui-accordion" data-options="fit:true,border:false">
             <div title="Title1" style="padding:10px;">
@@ -33,15 +39,14 @@
     <div data-options="region:'center',border:false">
         <div class="easyui-tabs" data-options="fit:true,border:false,plain:true">
             <div title="DataGrid" style="padding:5px">
-                <table class="easyui-datagrid">
-                </table>
+                <table class="easyui-datagrid"></table>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         var listdata = "@ViewBag.jlist";
         $(function () {
-            listdata = listdata.replace(/&quot;/g, "\"");//&quot; 
+            listdata = listdata.replace(/&quot;/g, "\"");//&quot;
             //listdata = "{\"d\":" + listdata + "}";
             listdata = $.parseJSON(listdata);
             console.log(listdata);
@@ -78,7 +83,7 @@
             }
         }
     });
-        
+
     </script>
 </body>
 

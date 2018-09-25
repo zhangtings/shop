@@ -21,7 +21,24 @@ namespace SHAN.Repository
             this._dbContext = efDbContext;
         }
 
+        private DbSet<TEntity> _entities;
+
+        protected virtual DbSet<TEntity> Table
+        {
+            get
+            {
+                if (_entities == null)
+                    _entities = _dbContext.Set<TEntity>();
+
+                return _entities;
+            }
+        }
+
+        public virtual IQueryable<TEntity> 实体集 => Table;
+
         public IQueryable<TEntity> Entities => _dbContext.Set<TEntity>();
+
+        public IQueryable<TEntity> AsNoTracking => Entities.AsNoTracking();
 
         public int Delete(object id, bool isSave)
         {
