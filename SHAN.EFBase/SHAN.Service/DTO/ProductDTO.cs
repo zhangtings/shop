@@ -38,5 +38,6 @@ namespace SHAN.Service
         public Nullable<int> Start_time { get; set; }
         public Nullable<long> End_time { get; set; }
         public int Pro_type { get; set; }
+        public int Pro_type1 { get; set; }
     }
 }

@@ -15,9 +15,10 @@ namespace SHAN.Service
         {
             Mapper.Initialize(cfg =>
             {
-
-                cfg.CreateMap<分类传输, 分类实体>();
-                cfg.CreateMap<分类实体, 分类传输>();
+                cfg.ValidateInlineMaps = false;
+                cfg.CreateMissingTypeMaps = true;
+                //cfg.CreateMap<分类传输, 分类实体>();
+                //cfg.CreateMap<分类实体, 分类传输>();
             });
         }
     }
