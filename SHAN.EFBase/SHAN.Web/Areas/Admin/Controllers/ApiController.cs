@@ -1,12 +1,11 @@
-﻿using CZ.Models.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
 
-namespace CZ.Areas.Admin.Controllers
+namespace Hotel.Areas.Admin.Controllers
 { 
 
     public class ApiController : Controller
@@ -21,7 +20,7 @@ namespace CZ.Areas.Admin.Controllers
         [HttpPost]
         public JsonResult Upload()
         {
-            Message message = null;
+            //Message message = null;
             string newFileName = new Random().Next(10000, 99999).ToString();
             string path = Server.MapPath("~") + "/upload/" + DateTime.Now.ToString("yyyyMMdd")+"/";
             if (!Directory.Exists(path))
@@ -33,7 +32,10 @@ namespace CZ.Areas.Admin.Controllers
             HttpPostedFileBase file = Request.Files[0];
             file.SaveAs(path + newFileName + Path.GetExtension(file.FileName));
             string result = "/upload/" + DateTime.Now.ToString("yyyyMMdd") + "/" + newFileName + Path.GetExtension(file.FileName);
-            message = Message.Success(result, result);
+            //message = Message.Success(result, result);
+            var message = new {
+                Key = result
+            };
             return Json(message);
         }
     }

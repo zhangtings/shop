@@ -1,0 +1,409 @@
+﻿@{
+    Layout = null;
+}
+@model SHAN.Service.商品DTO
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>类型编辑</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/Content/layui/css/layui.css" media="all" />
+</head>
+<body class="childrenBody">
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">基本信息</li>
+            <li>图片上传</li>
+            <li>详情信息</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form" style="width:80%;">
+
+                    @Html.HiddenFor(r => r.Id)
+                    <div class="layui-form-item layui-row layui-col-xs12">
+                        <label class="layui-form-label">所属分类</label>
+                        <div class="layui-input-block">
+                            <select name="cid" id="cid" lay-filter="cid">
+                                <option value="">请选择</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-row layui-col-xs12">
+                        <label class="layui-form-label">商品名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input Name" name="Name" lay-verify="required" placeholder="如：标准间" value="@Model.Name">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-row layui-col-xs12">
+                        <label class="layui-form-label">价格</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input Price" name="Price" lay-verify="required" placeholder="如：198.00" value="@Model.Price">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label ">单位</label>
+                        <div class="layui-input-inline w100">
+                            <input class="layui-input" id="Company" name="Company" type="text" value="@Model.Company" maxlength="4" lay-verify="required">
+                        </div>
+                        <label class="layui-form-label ">库存</label>
+                        <div class="layui-input-inline w100">
+                            <input class="layui-input" id="Num" name="Num" type="number" value="@Model.Num">
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label ">最新</label>
+                        <div class="layui-input-inline w100" style="width:100px">
+                            <input type="checkbox" name="Is_show" lay-skin="primary" value="1" @(Model.Is_show > 0 ? "checked" : "")>
+                        </div>
+                        <label class="layui-form-label ">推荐</label>
+                        <div class="layui-input-inline w100" style="width:100px">
+                            <input type="checkbox" name="Is_sale" lay-skin="primary" value="1" @(Model.Is_sale > 0 ? "checked" : " ")>
+                        </div>
+                        <label class="layui-form-label ">最热</label>
+                        <div class="layui-input-inline w100" style="width:100px">
+                            <input type="checkbox" name="Is_hot" lay-skin="primary" value="1" @(Model.Is_hot > 0 ? "checked" : " ")>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label ">原价</label>
+                        <div class="layui-input-inline w100">
+                            <input class="layui-input" id="Price" name="Price" type="number" value="@Model.Price" step="0.01">
+                        </div>
+                        <label class="layui-form-label ">优惠价</label>
+                        <div class="layui-input-inline w100">
+                            <input class="layui-input" id="Price_yh" name="Price_yh" type="number" value="@Model.Price_yh" step="0.01">
+                        </div>
+                    </div>
+
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label ">扶贫金额</label>
+                        <div class="layui-input-inline w100">
+                            <input class="layui-input" id="flje" name="flje" type="number" value="@Model.Flje" step="0.01">
+                        </div>
+                        <label class="layui-form-label ">赠送积分</label>
+                        <div class="layui-input-inline w100">
+                            <input class="layui-input" id="Price_jf" name="Price_jf" type="number" value="@Model.Price_jf">
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label ">进货价</label>
+                        <div class="layui-input-inline w100">
+                            <input class="layui-input" id="Renqi" name="Renqi" type="number" value="@Model.Renqi" step="0.01">
+                        </div>
+                        <label class="layui-form-label ">销量</label>
+                        <div class="layui-input-inline w100">
+                            <input class="layui-input" id="Shiyong" name="Shiyong" type="number" value="@Model.Shiyong">
+                        </div>
+                    </div>
+
+                    @*<div class="layui-form-item">
+                            <label class="layui-form-label">供应商</label>
+                            <div class="layui-input-inline w600">
+                                <input class="layui-input" id="Gongys" name="Gongys" type="text" value="@Model.Gongys">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label ">联系方式</label>
+                            <div class="layui-input-inline w100">
+                                <input class="layui-input" id="Lianxfs" name="Lianxfs" type="text" value="@Model.Lianxfs">
+                            </div>
+                            <label class="layui-form-label ">区域</label>
+                            <div class="layui-input-inline w100">
+                                <input class="layui-input" id="Quyu" name="Quyu" type="text" value="@Model.Quyu">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label ">快递方式</label>
+                            <div class="layui-input-inline w100">
+                                <input class="layui-input" id="Kdfs" name="Kdfs" type="text" value="@Model.Kdfs">
+                            </div>
+                            <label class="layui-form-label ">添加时间</label>
+                            <div class="layui-input-inline w100">
+                                <span class="layui-input"> @Model.AddData</span>
+                            </div>
+                        </div>*@
+
+                    @Html.HiddenFor(r => r.Photo_x)
+                    @Html.HiddenFor(r => r.Photo_d)
+                    @Html.HiddenFor(r => r.photo_string)
+                    @Html.HiddenFor(r => r.Content)
+                    @Html.HiddenFor(r => r.Addtime)
+                    @Html.HiddenFor(r => r.Sort)
+                    @Html.HiddenFor(r => r.Brand_id)
+                    @Html.HiddenFor(r => r.Start_time)
+                    @Html.HiddenFor(r => r.End_time)
+                    @Html.HiddenFor(r => r.Cid)
+                    <div class="layui-form-item layui-row layui-col-xs12">
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="subbtn">提交</button>
+                            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="layui-tab-item ">
+                <div class="layui-form-item">
+                    <div class="layui-upload">
+                        <button type="button" class="layui-btn" id="btnUpload-x">缩略图，大小230*230</button>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;width:100px">
+                            <div class="layui-upload-list" id="pics_x">
+                                @{
+                                    if (!string.IsNullOrEmpty(Model.Photo_x))
+                                    {
+
+                                        <img src="/@Model.Photo_x" data-src="@Model.Photo_x" height="100" />
+
+                                    }
+                                }
+                            </div>
+                        </blockquote>
+                    </div>
+                    <div class="layui-upload">
+                        <button type="button" class="layui-btn" id="btnUpload-d">视频(mp4)，最大20M</button>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;width:200px">
+                            <div class="layui-upload-list" id="pics_d">
+                                @{
+                                    if (!string.IsNullOrEmpty(Model.Photo_d))
+                                    {
+                                        <video height="200" controls="controls">
+                                            <source src="/@Model.Photo_d" type="video/mp4" />
+                                            浏览器不支持此视频播放
+                                        </video>
+
+                                    }
+                                }
+                            </div>
+                        </blockquote>
+                    </div>
+
+                    <div class="layui-upload">
+                        <button type="button" class="layui-btn" id="btnUpload3">轮播图，大小600*600，可多个</button>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px; width:801px">
+                            <div class="layui-upload-list" id="pics3">
+                                @{
+                                    if (!string.IsNullOrEmpty(Model.photo_string))
+                                    {
+                                        foreach (var item in Model.photo_string.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+                                        {
+                                            <img src="/@item" data-src="@item" height="200" />
+                                        }
+                                    }
+                                }
+                            </div>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item ">
+                <div class="layui-form-item layui-row layui-col-xs12">
+                    <label class="layui-form-label">图文信息</label>
+                    <div class="layui-input-block">
+                        <div id="bdeditor">
+                            <script type="text/javascript" charset="utf-8" src="~/Content/ueditor/ueditor.config.js"></script>
+                            <script type="text/javascript" charset="utf-8" src="~/Content/ueditor/ueditor.all.min.js"></script>
+                            <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+                            <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+                            <script type="text/javascript" charset="utf-8" src="~/Content/ueditor/lang/zh-cn/zh-cn.js"></script>
+                            <script id="editor" type="text/plain" style="width:900px;height:510px;">
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/Content/layui/layui.js"></script>
+    <script>
+        var c = UE.getEditor("editor",
+            {
+                topOffset: 0,
+                autoFloatEnabled: false,
+                autoHeightEnabled: false,
+                autotypeset: { removeEmptyline: true },
+                toolbars: [["source", "forecolor", "backcolor", "bold", "italic", "underline", "strikethrough", "fontborder", "link", "unlink", "paragraph", "fontfamily", "fontsize", "fullscreen",], ["undo", "redo", "indent", "justifyleft", "justifyright", "justifycenter", "justifyjustify", "insertorderedlist", "insertunorderedlist", "horizontal", "removeformat", "time", "date",], ["inserttable", "edittable", "edittd", "insertparagraphbeforetable", "insertrow", "insertcol", "mergeright", "mergedown", "deleterow", "deletecol", "splittorows", "splittocols", "splittocells", "deletecaption", "inserttitle", "mergecells", "deletetable",], ["emotion", "spechars", "searchreplace", "insertimage", "map", "insertvideo", "insertframe", "rowspacingtop", "rowspacingbottom", "pagebreak", "insertframe", "imagenone", "imagecenter", "lineheight", "edittip ", "insertcode", "cleardoc", "print", "preview", "selectall",]]
+            });
+
+        layui.use(['form', 'layer', "element", 'layedit', "upload"], function () {
+            var form = layui.form
+            layer = parent.layer === undefined ? layui.layer : top.layer,
+                $ = layui.jquery;
+            var element = layui.element;
+            var upload = layui.upload;
+            var layedit = layui.layedit;
+            layedit.set({
+                uploadImage: {
+                    url: '/NCPAdmin/api/upload' //接口url
+                }
+            });
+            c.ready(function () {
+                c.setContent($("#Content").val());
+            });
+
+            $.post('/NCPAdmin/Category/List', function (res) {
+                //dropListData = res.data;
+                if (res.data.length > 0) {
+                    layui.each(res.data, function (index, rt) {
+                        var option = "<option value=\"" + rt.Id + "\"";
+                        option += ">" + rt.Name + "</option>";
+                        $("select[name=cid]").append(option);
+                    });
+
+                } else {
+                    //$("select[name=rtid]").html("");
+                };
+                if ($("#Cid").val() > 0) {
+
+                    $("select[name=cid]").val($("#Cid").val());
+                }
+                form.render('select');
+            });
+
+            form.on("submit(subbtn)", function (data) {
+                data.field.Cid = $('#cid').val();
+                data.field.Content = c.getContent();
+                var picx = "abc";
+                $("#pics_x img").each(function () {
+                    picx += "," + $(this).attr("data-src");
+                });
+                picx = picx.replace("abc,", "").replace("abc", "");
+                data.field.Photo_x = picx;
+
+                var picsd = "abc";
+                $("#pics_d video").each(function () {
+                    picsd += "," + $(this).attr("data-src");
+                });
+                picsd = picsd.replace("abc,", "").replace("abc", "");
+                data.field.Photo_d = picsd;
+
+                var pic3 = "abc";
+                $("#pics3 img").each(function () {
+                    pic3 += "," + $(this).attr("data-src");
+                });
+                pic3 = pic3.replace("abc,", "").replace("abc", "");
+                data.field.photo_string = pic3;
+                ////弹出loading
+                //var index = layer.msg('数据提交中，请稍候', { icon: 16, time: false, shade: 0.8 });
+                $.post("/NCPAdmin/Product/Save", data.field, function (res) {
+                    //layer.msg("保存成功！");
+                    location.href = "Product";
+                });
+                //setTimeout(function () {
+                //    top.layer.close(index);
+                //    top.layer.msg("保存成功！");
+                //    layer.closeAll("iframe");
+                //    //刷新父页面
+                //    parent.location.reload();
+                //}, 2000);
+                return false;
+            });
+
+            upload.render({
+                elem: '#btnUpload-x',
+                url: '/NCPAdmin/api/upload',
+                multiple: false,
+                before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#pics_x').append('<img src="' + result + '" alt="' + file.name + '" height="200" class="layui-upload-img">');
+
+                        $('#pics_x img').unbind("click");
+                        $('#pics_x img').bind("click", function () {
+
+                            var index = $(this).index();
+                            $.modalConfirm("是否要删除当前图片", function (obj) {
+                                $('#pics_x img').eq(index).remove();
+                            })
+                        });
+
+                    });
+                },
+
+                done: function (res, index) {
+                    //上传完毕
+                    $('#pics_x img').last().attr("data-src", res.Key);
+                }
+            });
+
+            upload.render({
+                elem: '#btnUpload-d',
+                url: '/NCPAdmin/api/upload',
+                accept: 'video',
+                multiple: false,
+                before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    视频上传 = false;
+                    obj.preview(function (index, file, result) {
+
+                        //$('#pics_d').append('<img src="' + result + '" alt="' + file.name + '" height="200" class="layui-upload-img">');
+                        $('#pics_d').append('<video height="200" controls="controls"><source src="' + result + '" type="video/mp4" /> 浏览器不支持此视频播放</video>');
+                        $('#pics_d video').unbind("click");
+                        $('#pics_d video').bind("click", function () {
+
+                            var index = $(this).index();
+                            $.modalConfirm("是否要删除当前图片", function (obj) {
+                                $('#pics_d video').eq(index).remove();
+                            })
+                        });
+
+                    });
+                },
+
+                done: function (res, index) {
+                    //上传完毕
+                    $.modalMsg("视频上传完成!", "warning");
+                    视频上传 = true;
+                    $('#pics_d video').last().attr("data-src", res.Key);
+                }
+            });
+
+            upload.render({
+                elem: '#btnUpload3',
+                url: '/NCPAdmin/api/upload',
+                multiple: false,
+                before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#pics3').append('<img src="' + result + '" alt="' + file.name + '" height="200" class="layui-upload-img">');
+
+                        $('#pics3 img').unbind("click");
+                        $('#pics3 img').bind("click", function () {
+
+                            var index = $(this).index();
+                            $.modalConfirm("是否要删除当前图片", function (obj) {
+                                $('#pics3 img').eq(index).remove();
+                            })
+                        });
+
+                    });
+                },
+
+                done: function (res, index) {
+                    //上传完毕
+                    $('#pics3 img').last().attr("data-src", res.Key);
+                }
+            });
+
+
+        });
+
+    </script>
+</body>
+</html>

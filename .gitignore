@@ -346,3 +346,5 @@ ASALocalRun/
 /SHAN.EFBase/SHAN.Data
 /SHAN.EFBase/SHAN.Web.Tests
 /SHAN.EFBase/SHAN.WebAPI
+*.cd
+*.db

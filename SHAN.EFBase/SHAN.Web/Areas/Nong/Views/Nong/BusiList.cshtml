@@ -1,0 +1,76 @@
+﻿@{
+    Layout = null;
+}
+@model SHAN.Service.商家DTO
+<!DOCTYPE html>
+<html style="font-size:100%">
+<head>
+    <meta charset="utf-8">
+    <title>商家目录</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="/Content/bootstrap.css" media="all" />
+    <link rel="stylesheet" href="/Content/layui/css/layui.css" media="all" />
+    <style>
+    </style>
+</head>
+<body style="background-color: #f2f2f2">
+    @Html.HiddenFor(r=>r.Tags)
+    <div class="container-fluid p-0">
+        <div class="font-weight-bold pt-2 pb-2 text-center" style="background-color:#1d8902;color:white;font-size:1.2rem;">琼海市优质农业品牌开发服务协会</div>
+            <img  src="~/Content/nong/top.png" alt="Alternate Text" height="200" style="width:100%;max-height:150px" />
+
+            <div class="hulist container-fluid mt-1">
+                <div class="" id="view"  lay-accordion="" lay-filter="test"></div>
+            </div>
+
+    </div>
+    <script id="demo" type="text/html">
+        {{#  layui.each(d, function(index, item){ }}
+        <div class="row align-items-center flex-nowrap mt-2 pl-2 pr-2 bg-white" style="min-height: 120px;" onclick="javascript:location.href='Detail?Id={{ item.Id }}'">
+            <img class="rounded" src="{{ item.Photox }}" alt="Alternate Text" style="width:80px;height:100px" />
+            <div class="d-flex flex-column flex-grow-1 ml-2" style="height:100px">
+                <div class="mb-2" style="font-weight:400;font-size:1.25rem">{{ item.Title }}</div>
+                <p style="font-size:0.75rem;color: #bfbfbf;">{{ item.Address }}</p>
+                <div class="mt-auto " >
+                    {{# if (item.BiaoQian){}}<div style="height:auto">{{ item.BiaoQian  }}</div>
+                    {{#  }; }}
+                </div>
+            </div>
+        </div>
+        {{#  }); }}
+    </script>
+    <script type="text/javascript" src="/Content/layui/layui.js"></script>
+    <script>
+        var gtjson = "";
+        layui.use(['laytpl', 'element', 'layer', 'jquery', 'laydate'], function () {
+            var element = layui.element;
+            var laytpl = layui.laytpl;
+            var laydate = layui.laydate;
+
+            $ = layui.$;
+
+            $.get('/Nong/Nong/GetBusiList?Tags='+$("#Tags").val(), function (json) {
+                var getTpl = demo.innerHTML
+                    , view = document.getElementById('view');
+
+                laytpl(getTpl).render(json.data, function (html) {
+                    view.innerHTML = html;
+                    element.init();
+                });
+
+            });
+
+        });
+
+
+
+    </script>
+</body>
+</html>

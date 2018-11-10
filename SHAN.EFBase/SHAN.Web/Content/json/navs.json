@@ -1,0 +1,153 @@
+{
+  "contentManagement": [
+    {
+      "title": "房间管理",
+      "icon": "icon-text",
+      "href": "",
+      "spread": false,
+      "children": [
+        {
+          "title": "房间情况",
+          "icon": "&#xe609;",
+          "href": "/Admin/Room/Room1",
+          "spread": false
+        },
+        {
+          "title": "房间信息",
+          "icon": "&#xe609;",
+          "href": "/Admin/Room/Room",
+          "spread": false
+        },
+        {
+          "title": "房间类型",
+          "icon": "&#xe61c;",
+          "href": "/Admin/Room/RoomType",
+          "spread": false
+        },
+        {
+          "title": "开房信息",
+          "icon": "&#xe609;",
+          "href": "/Admin/Room/OpenRoom",
+          "spread": false
+        },
+        {
+          "title": "预定信息",
+          "icon": "&#xe609;",
+          "href": "/Admin/Room/RoomOrder",
+          "spread": false
+        },
+        {
+          "title": "入住记录",
+          "icon": "&#xe609;",
+          "href": "/Admin/Room/LiveIn",
+          "spread": false
+        }
+      ]
+    },
+    {
+      "title": "用户管理",
+      "icon": "&#xe612;",
+      "href": "",
+      "spread": false,
+      "children": [
+        {
+          "title": "酒店列表",
+          "icon": "&#xe61c;",
+          "href": "/Admin/HotelUser/HotelUser",
+          "spread": false
+        },
+        {
+          "title": "添加用户",
+          "icon": "&#xe609;",
+          "href": "/Admin/HotelUser/HUEdit",
+          "spread": false
+        }
+      ]
+    },
+    {
+      "title": "系统设置",
+      "icon": "&#xe631;",
+      "href": "",
+      "spread": false,
+      "children": [
+        {
+          "title": "房型设置",
+          "icon": "",
+          "href": "/Admin/Room/RoomType",
+          "spread": false
+        },
+        {
+          "title": "优惠设置",
+          "icon": "",
+          "href": "/Admin/Guest/GuestType",
+          "spread": false
+        }
+      ]
+    }
+  ],
+	"memberCenter": [
+    {
+      "title": "用户管理",
+      "icon": "&#xe612;",
+      "href": "",
+      "spread": false,
+      "children": [
+        {
+          "title": "客人类型",
+          "icon": "&#xe61c;",
+          "href": "/Admin/Guest/GuestType",
+          "spread": false
+        },
+        {
+          "title": "客人信息",
+          "icon": "&#xe609;",
+          "href": "/Admin/Guest/Guest",
+          "spread": false
+        }
+      ]
+    }
+	],
+	"systemeSttings": [
+		{
+			"title": "系统基本参数",
+			"icon": "&#xe631;",
+			"href": "page/systemSetting/basicParameter.html",
+			"spread": false
+		},{
+			"title": "系统日志",
+			"icon": "icon-log",
+			"href": "page/systemSetting/logs.html",
+			"spread": false
+		},{
+			"title": "友情链接",
+			"icon": "&#xe64c;",
+			"href": "page/systemSetting/linkList.html",
+			"spread": false
+		},{
+			"title": "图标管理",
+			"icon": "&#xe857;",
+			"href": "page/systemSetting/icons.html",
+			"spread": false
+		}
+	],
+	"seraphApi": [
+		{
+			"title": "三级联动模块",
+			"icon": "icon-mokuai",
+			"href": "page/doc/addressDoc.html",
+			"spread": false
+		},{
+			"title": "bodyTab模块",
+			"icon": "icon-mokuai",
+			"href": "page/doc/bodyTabDoc.html",
+			"spread": false
+		},{
+			"title": "三级菜单",
+			"icon": "icon-mokuai",
+			"href": "page/doc/navDoc.html",
+			"spread": false
+		}
+	]
+}
+
+

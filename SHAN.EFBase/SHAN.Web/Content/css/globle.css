@@ -1,0 +1,314 @@
+﻿
+body {
+    font-family: "微软雅黑";
+    font-size: 14px;
+    color: #404040;
+    height: 100%;
+    background-color: #fff;
+}
+
+html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, button, textarea, blockquote {
+    padding: 0;
+    margin: 0;
+}
+
+select {
+    margin: 0;
+}
+
+table {
+    margin: 0 auto;
+}
+
+table, td, tr, th, em {
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+ol, ul, li {
+    list-style-type: none;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+img {
+    border: 0;
+}
+
+p {
+    word-break: break-all;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+focus {
+    outline: 0;
+}
+/* ���� */
+a {
+    text-decoration: none;
+    color: #4c4c4c;
+    cursor: pointer;
+}
+
+    a:link {
+        text-decoration: none;
+    }
+
+    a:active {
+        color: #375719;
+        text-decoration: underline;
+    }
+
+    a:visited {
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #4585f1;
+    }
+
+    a:focus {
+        outline: none;
+    }
+/* a标签的字体颜色 */
+.cWhite {
+    color: #fff;
+}
+
+.cr {
+    color: #d74035
+}
+
+    .cr:hover {
+        color: red
+    }
+
+.cWhite:hover {
+    color: #fff;
+}
+
+.cGreen, .cGreen:visited {
+    color: #81b81f;
+}
+
+.cBrown, .cBrown:visited {
+    color: #663333;
+}
+
+.cOrnage {
+    color: #f3830c
+}
+
+.cgray {
+    color: #999999
+}
+
+.chui {
+    color: #996533;
+    font-family: "宋体"
+}
+
+.clan {
+    color: #336699
+}
+
+.cmore {
+    color: #333333
+}
+
+.cDBrown, .cDBrown:visited {
+    color: #4f3a21;
+}
+
+.clan:hover, .clan:visited {
+    text-decoration: none
+}
+
+.cLGray, .cLGray:visited, .cLGray a, .cLGray a:visited {
+    color: #999;
+}
+
+.cGray {
+    color: #8d8d8d;
+}
+
+.cDGray, .cDGray:visited, .cDGray a, .cDGray a:visited {
+    color: #666666;
+}
+
+.cBlack, .cBlack:visited, .cBlack a, .cBlack a:visited {
+    color: #000;
+}
+
+a.cBlue, .cBlue, .cBlue:visited, .cBlue a, .cBlue a:visited {
+    color: #1570cb;
+}
+
+.cRed, .cRed:visited, .cRed a, .cRed a:visited {
+    color: Red;
+}
+
+.cDRed, .cDRed:visited, .cDRed a, .cDRed a:visited {
+    color: #910000;
+}
+
+    .cRed a:hover, .cOrnage:hover, .clan:hover, .chui:hover, a.cRed:hover, .cBlue a:hover, a.cBlue:hover, .cDRed a:hover, a.cDRed:hover, .cLGray a:hover, a.cLGray:hover, .cGray a:hover,
+    a.cGray:hover, .cDGray a:hover, a.cDGray:hover, .cBlack a:hover, a.cBlack:hover, .cGreen a:hover, a.cGreen:hover, clan a:hover {
+        color: #c03;
+    }
+/* 浮动样式*/
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.pd5 {
+    padding: 0 5px
+}
+
+
+.hidden {
+    display: none;
+}
+
+.none {
+    display: none;
+}
+
+.block {
+    display: block;
+}
+/*阴影*/
+.box_soadow {
+    -webkit-box-shadow: 0px 1px 3px #cacaca;
+    -moz-box-shadow: 0px 1px 3px #cacaca;
+    box-shadow: 0px 1px 3px #cacaca;
+}
+
+/*字体样式 */
+.fB {
+    font-weight: bold;
+}
+
+.fI {
+    font-style: italic;
+}
+
+.f12px {
+    font-size: 12px;
+}
+
+.f14px {
+    font-size: 14px;
+}
+
+.f16px {
+    font-size: 16px;
+}
+
+.f20px {
+    font-size: 20px;
+    font-family: "微软雅黑"
+}
+/* 清除浮动 */
+.blank3 {
+    clear: both;
+    height: 3px;
+    overflow: hidden;
+    display: block;
+}
+
+.blank5 {
+    clear: both;
+    height: 5px;
+    overflow: hidden;
+    display: block;
+}
+
+.blank6 {
+    clear: both;
+    height: 6px;
+    overflow: hidden;
+    display: block;
+}
+
+.blank8 {
+    clear: both;
+    height: 8px;
+    overflow: hidden;
+    display: block;
+}
+
+.blank9 {
+    clear: both;
+    height: 9px;
+    overflow: hidden;
+    display: block;
+}
+
+.blank15 {
+    clear: both;
+    height: 15px;
+    overflow: hidden;
+    display: block;
+}
+
+.clear {
+    clear: both;
+    height: 0;
+    overflow: hidden;
+    display: block;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.area {
+    width: 1200px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.aril {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.p_relative {
+    position: relative;
+}
+
+.p_absolute {
+    position: absolute;
+}
+
+* html .clearfix {
+    zoom: 1;
+}
+
+* + html .clearfix {
+    zoom: 1;
+}
+
+    .clearfix:after {
+        height: 0;
+        visibility: hidden;
+        content: ".";
+        display: block;
+        clear: both;
+    }

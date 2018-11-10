@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html data-livestyle-extension="available">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>商快链平台</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="applicable-device" content="mobile">
+    <link rel="stylesheet" href="img/bootstrap.css">
+    <link rel="stylesheet" href="img/main.css">
+    <script src="js/jquery.SuperSlide.2.1.3.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery1.42.min.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        .dis {
+            display: block;
+        }
+
+        .undis {
+            display: none
+        }
+
+        .slumps_current span {
+            border-bottom: 1px solid #FFFFFF !important;
+            color: #FFFFFF !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="c_top">
+        <div class="c_logo">
+            <img src="img/head_logo.png" width="114" height="50">
+        </div>
+        <div class="c_login"><a href="/SKL/SKL/Register">注册</a></div>
+        <div class="c_login"><a href="/SKL/SKL/UserLogin">登录</a></div>
+    </div>
+    <div class="mainpageV2 b-c-gray">
+        <div class="partNew  pb10">
+            <div class="large_width margin-auto c-white">
+                <div class="logoV4 pb30">
+                    <div class="in-block text-left vertical-middl lh-1em">
+                        <div class="title-below">
+                            <h2>商快链</h2>
+                            <span>Business Blockchain</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pl14 pr14">
+                    <div class="clearfix pl22 pr22">
+                        <ul class="slumps">
+                            <a class="slumps_current" id="slumps1" onmouseover="javascript:doClick(this)">
+                                <div class="col-4 wap-main-tab point nn1"><span class="wap-main-tab-title">查公司</span></div>
+                            </a><a class="slumps_link" id="slumps2" onmouseover="javascript:doClick(this)">
+                                <div class="col-4 wap-main-tab point nn2"><span class="wap-main-tab-title">查项目</span></div>
+                            </a><a class="slumps_link" id="slumps3" onmouseover="javascript:doClick(this)">
+                                <div class="col-4 wap-main-tab point nn3"><span class="wap-main-tab-title">查全球</span></div>
+                            </a>
+                        </ul>
+                    </div>
+                    <div class="inputbox slumps-down">
+                        <div class="dis" id="sub1">
+                            <div class="input-group mt12 ss1">
+                                <form action="/SKL/SKL/Search" autocomplete="off" id="company">
+                                    <input type="search" class="form-control main-input pl14"
+                                        id="live-search" maxlength="50" name="word" search-type="company" placeholder="请输入公司关键词" style="border-top-left-radius: 4px; border-bottom-left-radius: 4px;">
+                                </form>
+                                <div class="input-group-addon main-input point" onclick="companysubmit()"><i class="tic tic-search tic-lg"></i></div>
+                            </div>
+                        </div>
+                        <div class="undis" id="sub2">
+                            <div class="input-group  mt12 ss2">
+                                <form autocomplete="off" action="/SKL/SKL/Search" id="pro">
+                                    <input type="search" class="form-control main-input pl14"
+                                        id="live-search" maxlength="50" name="word" search-type="company" placeholder="请输入项目关键词" style="border-top-left-radius: 4px; border-bottom-left-radius: 4px;">
+                                </form>
+                                <div class="input-group-addon main-input point" onclick="prosubmit()"><i class="tic tic-search tic-lg"></i></div>
+                            </div>
+                        </div>
+                        <div class="undis" id="sub3">
+                            <div class="input-group  mt12 ss3">
+                                <form autocomplete="off" action="/SKL/SKL/Search" id="all">
+                                    <input type="search" class="form-control main-input pl14"
+                                        id="live-search" maxlength="50" name="word" search-type="company" placeholder="请输入公司英文名称" style="border-top-left-radius: 4px; border-bottom-left-radius: 4px;">
+                                </form>
+                                <div class="input-group-addon main-input point" onclick="allsubmit()"><i class="tic tic-search tic-lg"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        function doClick(o) {
+                            o.className = "slumps_current";
+                            var j;
+                            var id;
+                            var e;
+                            for (var i = 1; i <= 3; i++) { //这里3 需要你修改 你多少条分类 就是多少
+                                id = "slumps" + i;
+                                j = document.getElementById(id);
+                                e = document.getElementById("sub" + i);
+                                if (id != o.id) {
+                                    j.className = "slumps_link";
+                                    e.style.display = "none";
+                                } else {
+                                    e.style.display = "block";
+
+                                }
+                            }
+                        }
+                    </script>
+                    <div class="f12 mt15 over-hide" style="height: 21px;">
+                        <img src="img/hotkey-icon.png" alt="" width="36px;" class="vertical-top">
+                        <span class="hot-search hot-search-company">
+                            <a class="in-block c-white pl7 vertical-top" href="https://www.ciie.org/zbh/zyxw/" style="color: #b4bdd0">中国国际进口博览会</a>
+
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pl15 pr15 over-hide mt15 b-c-white">
+            <div class="text-center f16 new-c1 pt20 pb20">热点维度</div>
+            <a href="/SKL/SKL/Company" class="float-left mb15" style="width: calc(50% - 5px);">
+                <img src="img/wap_seo1.png" width="100%" alt="企业名录" /></a>
+            <a href="/SKL/SKL/Index?Cid=23" class="float-right mb15" style="width: calc(50% - 5px);">
+                <img src="img/wap_seo2.png" width="100%" alt="人员名录" /></a>
+            <a href="/SKL/SKL/Index?Cid=34" class="float-left mb15" style="width: calc(50% - 5px);">
+                <img src="img/wap_seo3.png" width="100%" alt="品牌名录" /></a>
+            <a href="/SKL/SKL/Index?Cid=40" class="float-right mb15" style="width: calc(50% - 5px);">
+                <img src="img/wap_seo4.png" width="100%" alt="500强名录" /></a>
+            <a href="/SKL/SKL/Index?Cid=41" class="float-left mb15" style="width: calc(50% - 5px);">
+                <img src="img/wap_shuihao_0524.png" width="100%" alt="税号查询" /></a>
+        </div>
+    </div>
+    <script>
+        function companysubmit() {
+            $('#company').submit();
+        }
+        function prosubmit() {
+            $('#pro').submit();
+        }
+        function allsubmit() {
+            $('#all').submit();
+        }
+    </script>
+</body>
+</html>

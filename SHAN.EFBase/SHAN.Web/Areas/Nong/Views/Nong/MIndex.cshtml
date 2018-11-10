@@ -1,0 +1,167 @@
+﻿
+@{
+    Layout = null;
+}
+@using SHAN.Service
+@{
+    List<商品DTO> plist = ViewBag.商品;
+    List<栏目DTO> list = ViewBag.商家分类;
+}
+<!DOCTYPE html>
+
+<html style="font-size:100%">
+<head>
+    <meta charset="utf-8">
+    <title>琼海农业品牌</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="favicon.ico">
+
+    <link rel="stylesheet" href="/Content/bootstrap.css" media="all" />
+    <link rel="stylesheet" href="/Content/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="/Content/swiper.css">
+    <style>
+        a:link {
+            text-decoration: none;
+            color: black;
+        }
+        .底部 {
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            z-index: 99;
+        }
+    </style>
+</head>
+<body style="background-color:#f2f2f2">
+    <header class="container-fluid p-0 顶部">
+        <div class="font-weight-bold pt-2 pb-2 text-center" style="background-color:#1d8902;color:white;font-size:1.2rem;">琼海市优质农业品牌开发服务协会</div>
+        <img src="~/Content/nong/top.png" alt="Alternate Text" height="200" style="width:100%;max-height:150px" />
+        <div class="mt-2">
+            <div class="d-flex" id="redian ">
+                <i class="col-1  layui-icon  mr-2" style="color:red;font-weight:900">&#xe645;</i>
+                <marquee class="col-8 " direction="left" behavior="scroll" scrollamount="3" scrolldelay="0" loop="-1" width="80%" height="25" bgcolor="#f2f2f2" hspace="5">
+                    <a style="color:#747171;font-size:0.8rem">琼海市优质农业品牌开发服务协会！</a> <a style="color:#747171;font-size:0.8rem">琼海市优质农业品牌开发服务协会！</a> <a style="color:#747171;font-size:0.8rem">琼海市优质农业品牌开发服务协会！</a>
+                </marquee>
+            </div>
+            
+        </div>
+
+    </header>
+    <div class="container">
+        <div class="row bg-white pt-3 " >
+            @{
+                List<栏目DTO> sjlist = list.Where(a => list.Where(r => r.Name == "商家分类").Select(r => r.Id).Contains(a.Cid)).OrderBy(r=>r.Id).ToList();
+                foreach (var c in sjlist)
+                {
+                    <a class="col-3 text-center pb-3" href="BusiList?Tags=@c.Id">
+                        <img src="@c.Bz_1" alt="Alternate Text" width="40" height="40" />
+                        <p class="text-center pt-1" >@c.Name</p>
+                    </a>
+                }
+            }
+
+        </div>
+        <div class="row mt-1">
+            <div class="col-12 pb-1 row"><div style="background-color:#FF5722;width:5px;height:70%;margin:4px 10px 0"></div><div>乡镇特色</div> </div>
+            <div class="swiper-container mt-1">
+                <div class="swiper-wrapper">
+                    @{
+                        List<栏目DTO> xzlist = list.Where(a => list.Where(r => r.Name == "乡镇特色").Select(r => r.Id).Contains(a.Cid)).ToList();
+                        foreach(var x in xzlist){
+
+                            <a class="swiper-slide text-center border-left" href="ColInfo?Id=@x.Id">
+                            <img src="@x.Bz_1" alt="@x.Id" style="width:102%;height:120px" />
+                        </a>
+                        }
+                    }
+
+                </div>
+                <!-- Add Pagination -->
+
+            </div>
+        </div>
+        <div class="row mt-2">
+            <img src="/Content/nong/top1.png" alt="Alternate Text" height="100" style="width:100%" />
+        </div>
+        <div class="row">
+            <div class="col-12 pb-1 row"><div style="background-color:#FF5722;width:5px;height:70%;margin:4px 10px 0"></div><div>农品特产</div> </div>
+        </div>
+        <div class="row">
+            
+            @{
+                foreach (var p in plist)
+                {
+                    <a class="col-6 p-1" href="../Shop/Pinfo?Id=@p.Id">
+                        <div class="card ">
+                            <img class="card-img-top" src="@(p.Photo_x.IndexOf("/") == 0 ? p.Photo_x : "/" + p.Photo_x) " alt="" style="height:150px" />
+                            <div class="card-body p-1">
+                                <p class="card-title font-weight-bold" style="letter-spacing: 0;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">@p.Name</p>
+                                <p class="card-text" style="font-size:0.8rem">
+                                    @{ if (p.Price_yh > 0)
+                                        {
+                                            <span style="margin-left:4%">原价：<del>￥@p.Price</del></span><br />
+                                            <b style="color:red;font-size:1rem">￥@p.Price_yh</b><span style="float:right">@p.Shiyong 人已购买</span>
+                                        }
+                                        else
+                                        {
+                                            <span style="margin-left:4%">新品上市</span><br />
+                                            <b style="color:red;font-size:1rem">￥@p.Price</b><span style="float:right">@p.Shiyong 人已购买</span>
+                                        }
+
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                }
+            }
+
+            
+        </div>
+    </div>
+    <footer class="底部 container " >
+        <div class="row pt-2 border-bottom" style="background-color:#f2f2f2">
+            <a class="col text-center" href="/nong/nong/mindex">
+                <i class="layui-icon" style="font-size:1.5rem">&#xe68e;</i>
+                <p class="text-center mb-1">首页</p>
+            </a>
+            <a class="col text-center" href="/nong/shop/category">
+                <i class="layui-icon" style="font-size:1.5rem"> &#xe653;</i>
+                <p class="text-center mb-1">分类</p>
+            </a>
+            <a class="col text-center" href="/nong/shop/cart">
+                <i class="layui-icon" style="font-size:1.5rem">&#xe657;</i>
+                <p class="text-center mb-1">购物车</p>
+            </a>
+            <a class="col text-center" href="/nong/shop/myshop">
+                <i class="layui-icon" style="font-size:1.5rem">&#xe770;</i>
+                <p class="text-center mb-1">我的</p>
+            </a>
+        </div>
+    </footer>
+    <script type="text/javascript" src="~/Content/layui/layui.js"></script>
+    <script src="~/Content/swiper.js"></script>
+    <script>
+
+        var swiper = new Swiper('.swiper-container', {
+            autoplay: 1,
+            speed: 3000,
+            slidesPerView: 4,
+            //centeredSlides: true,
+            spaceBetween: 5,
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+        });
+
+    </script>
+</body>
+</html>

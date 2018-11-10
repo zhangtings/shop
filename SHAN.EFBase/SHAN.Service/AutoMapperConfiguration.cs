@@ -15,10 +15,8 @@ namespace SHAN.Service
         {
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<Product, ProductDTO>();
-                cfg.CreateMap<ProductDTO, Product>();
-                cfg.CreateMap<分类传输, 分类实体>();
-                cfg.CreateMap<分类实体, 分类传输>();
+                cfg.ValidateInlineMaps = false;
+                cfg.CreateMissingTypeMaps = true;
             });
         }
     }

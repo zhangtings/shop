@@ -1,0 +1,57 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>房间信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="/Content/layui/css/layui.css" media="all" />
+</head>
+<body>
+    <div class="layui-row">
+        <table class="layui-table" id="table"></table>
+    </div>
+    <script type="text/javascript" src="/Content/layui/layui.js"></script>
+    <script>
+        layui.use(['table', 'element', 'laypage'], function () {
+            var table = layui.table;
+            var element = layui.element;
+
+
+            table.render({
+                id: 'idTest'
+                , elem: '#table'
+                , method: "post"
+                , url: '/Admin/Guest/GuestList' //数据接口
+                , request: {
+                    pageName: 'page.CurrentPage' //页码的参数名称，默认：page
+                    , limitName: 'page.PageSize' //每页数据量的参数名，默认：limit
+                }
+                , page: true //开启分页
+                , cols: [[ //表头
+                    { type: 'checkbox' }
+                    , { field: 'ID', title: 'ID', width: 60, sort: true }
+                    , { field: 'Name', title: '姓名', width: 100 }
+                    , { field: 'Mobile', title: '电话' }
+                    , { field: 'PId', title: '身份证号' }
+                    //, { field: 'Pic', title: '封面图', width: 80, templet: '<div><img src="{{ d.Pic}}"></div>', style: 'height:24px;width:24px;line-height:24px!important;' }
+                    , { field: 'GTId', title: '客人类型' }
+                    , { field: 'Mark', title: '备注' }
+
+                ]]
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+﻿@model SHAN.Service.商品DTO
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>@Model.Name</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="/Content/bootstrap.css" media="all" />
+    <link rel="stylesheet" href="/Content/layui/css/layui.css" media="all" />
+    <style>
+        .视频封面 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width:100%
+        }
+
+        .播放按钮 {
+            position: absolute;
+            top: 40%;
+            left: 40%;
+        }
+        .produtc-top-info {
+            border-radius: 25px;
+            border: 2px solid red;
+            color: white;
+            font-size: 1rem;
+            width: 50%;
+            display: inline-block;
+            background-color: #f86d15;
+        }
+        .content img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border: none;
+            margin-bottom: 10px;
+        }
+        .底部 {
+            position: fixed;
+            width: 100%;
+            height:50px;
+            bottom: 0;
+            z-index: 99;
+        }
+    </style>
+</head>
+<body >
+
+    <div class="顶部信息">
+        @{ if (!string.IsNullOrEmpty(Model.Photo_d))
+            {
+                <div id="video">
+                    <div class="aui-banner-wrapper-item">
+                        <a href="#">
+                            <video style="height:360px;width:100%" controls="controls" x5-playsinline="" playsinline="" webkit-playsinline="" poster="" preload="auto">
+                                <source src="@Model.Photo_d" type="video/mp4" />
+                                浏览器不支持此视频播放
+                            </video>
+                        </a>
+                    </div>
+                </div>
+                <div id="videoimg" class="视频封面">
+                    <div class="aui-banner-wrapper-item">
+                        <a href="javascript:播放视频();">
+                            @{ 
+                                var 封面图片 = Model.photo_string.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                            }
+                            <img src="@(封面图片.IndexOf("/")==0?封面图片:"/"+封面图片)" style="height:360px;width:100%">
+                             <div id="播放按钮" class="播放按钮">
+                                <img src="/Content/qianduan/images/bofang.png" style="width:20%" />
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            }
+            <div class="layui-carousel" id="imglist" style="@(string.IsNullOrEmpty(Model.Photo_d) ? "" : "display:none;") ">
+                <div carousel-item="" style="height:360px;width:100%">
+                    @{
+                        if (!string.IsNullOrEmpty(Model.photo_string) && Model.photo_string.Length > 0)
+                        {
+                            foreach (var item in Model.photo_string.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                <div><img src="@(item.IndexOf("/")==0?item:"/"+item)" style="height:100%;width:100%"></div>
+                            }
+                        }
+
+                    }
+                </div>
+            </div>
+        }
+    </div>
+    @{
+        if (!string.IsNullOrEmpty(Model.Photo_d) && !string.IsNullOrEmpty(Model.photo_string) && Model.photo_string.Length > 0)
+        {
+            <div style="text-align:center;margin-top:0.2rem">
+                <span style="display: inline-block;width:30%"><a href="javascript:showVideo();" class="produtc-top-info">视频</a></span>
+                <span style="display: inline-block;width:30%"><a href="javascript:showImg();" class="produtc-top-info">图片</a></span>
+            </div>
+        }
+    }
+            <div class="container-fluid mt-3" style="background-color:#dddddd">
+                <H5 class="row bg-white p-2 " style="font-size:1.3rem">@Model.Name</H5>
+                <div class="row bg-white p-2 align-items-end">
+                    @{ if (Model.Price_yh > 0)
+                        {
+                            <span style="color:red;font-size:1.2rem">￥:@Model.Price_yh</span>
+                            <span class="ml-2" style="text-decoration:none;color:#999">| 原价：<del>￥@Model.Price</del></span>
+                        }
+                        else
+                        {
+                            <span>
+                                ￥:@Model.Price
+                            </span>
+                        }
+                    }
+
+                </div>
+                <div class="row bg-white "><span class="col" style="color:red;font-size:1rem">捐助 @Model.Flje 元扶贫金</span> </div>
+                <div class="row bg-white py-2 " style="color:#2b2b2b">
+                    <span class="col-3">销量:@Model.Shiyong</span>
+                    <span class="col-6" style="font-size:12px">运费:卖家包邮 </span>
+                </div>
+                <div class="row justify-content-center bg-white mt-2">
+                    <div class=" layui-text pt-2 pb-2 "><h3>图文详情</h3></div>
+                    <div class="content" style="width:100%">@Html.Raw(Model.Content)</div>
+                </div>
+            </div>
+    
+
+            <div class="底部 container">
+                <div class="row align-items-center" style="background-color:white;height:100%">
+                    <div class="col d-flex justify-content-between">
+                        <a class="text-center" href="category">
+                            <i class="layui-icon" style="font-size:1.2rem">&#xe653;</i>
+                            <p style="font-size:0.8rem">分类</p>
+                        </a>
+                        <a class="text-center" href="cart">
+                            <i class="layui-icon" style="font-size:1.2rem">&#xe657;</i>
+                            <p style="font-size:0.8rem">购物车</p>
+                        </a>
+                    </div>
+                    
+                    <a class="col d-flex justify-content-center align-items-center" href = "javascript:addToCar(@Model.Id)" style="background-color: #ffb03f;height:100%;color:white">加入购物车</a>
+                    <a class="col d-flex justify-content-center align-items-center" href="javascript:buyNow1()" style="background-color: #FF5E53;height:100%;color:white"><span>立即购买</span></a>
+                </div>
+            </div>
+
+    <script type="text/javascript" src="/Content/layui/layui.js"></script>
+    <script>
+        var gtjson = "";
+        layui.use(['laytpl', 'element', 'layer', 'jquery', 'laydate', 'rate', 'carousel'], function () {
+            var element = layui.element,
+                layer = parent.layer === undefined ? layui.layer : top.layer;
+            var laytpl = layui.laytpl;
+            var laydate = layui.laydate;
+            var rate = layui.rate
+                , carousel = layui.carousel;
+
+            $ = layui.$;
+
+            rate.render({
+                elem: '#star_box'
+                , value: 5 //初始值
+                , text: true //开启文本
+
+                , readonly: true
+                , setText: function (value) {
+                    this.span.text(value + "分");
+                }
+            });
+
+            carousel.render({
+                elem: '#imglist'
+                , interval: 3000
+                , anim: 'fade'
+                , height: '360px'
+                , width: '100%'
+            });
+
+        });
+
+        function addToCar(pid) {
+            var url = '/nong/shop/AddToCar?pid=' + pid;
+            $.post(url, function (res) {
+                layer.msg(res.msg);
+            })
+        };
+
+        function showImg() {
+            $('#video').fadeOut(0);
+            $('#imglist').fadeIn(300);
+
+        }
+        function showVideo() {
+            $('#imglist').fadeOut(0);
+            $('#video').fadeIn(300);
+
+        }
+        function 播放视频() {
+            $('#videoimg').fadeOut(0);
+            var video = document.getElementsByTagName('video')[0];
+            video.play();
+        }
+    </script>
+</body>
+</html>

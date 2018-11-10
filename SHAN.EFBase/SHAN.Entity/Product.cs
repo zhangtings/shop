@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace SHAN.Entity
 {
     [Table("test.lr_product")]
-    //[DDb.Table("lr_product")]
     public class Product : BaseEntity
     {
         [Key]

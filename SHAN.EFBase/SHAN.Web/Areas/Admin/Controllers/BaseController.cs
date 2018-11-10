@@ -4,30 +4,30 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace CZ.Areas.Admin.Controllers
+namespace Hotel.Areas.Admin.Controllers
 {
 
-    // GET: Admin/Base
+
     public class BaseController : Controller
     {
-        // GET: village/Base
-
-        public string uid { get; set; }
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
 
             string requestUrl = System.Web.HttpContext.Current.Request.Url.ToString().ToLower();
-            if(requestUrl.Contains("localhost:"))
+            if (requestUrl.Contains("Nong:"))
             {
-                Models.Users userData = new Models.Users()
+                if (filterContext.HttpContext.Session["admin"] == null)
                 {
-                    LoginName = "shengda"
-                };
-                filterContext.HttpContext.Session["admin"] = userData; 
+                    Response.Redirect("/Admin/Login/Nong");
+                    Response.End();
+                }
+                //filterContext.HttpContext.Session["admin"] = "LW";
             }
-
-
-
+            if (requestUrl.Contains("localhost:"))
+            {
+                filterContext.HttpContext.Session["admin"] = "LW"; 
+            }
+            filterContext.HttpContext.Session["admin"] = "LW";
             if (filterContext.HttpContext.Session["admin"] == null)
             {
                 Response.Redirect("/Admin/Login/Index");

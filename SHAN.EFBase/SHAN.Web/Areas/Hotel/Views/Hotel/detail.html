@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>房间类型</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="/Content/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="/Content/bootstrap.css" media="all" />
+</head>
+<body style="background-color: #f7f6f5;font-size:62.5%">
+
+    <header class="page_hotelDetail_header Cnewheader CnewheaderMain">
+        <div class="pure-g main" style="background: url(./index/hot_city01.jpg)">
+            <div class="pure-u-1-5 return"><a href="http://m.huazhu.com/event?ActivityId=562" data-no-turbolink="true"><i class="icon-back"></i></a></div>
+            <div class="pure-u-3-5 title Ltac">
+                <h3>酒店详情页</h3>
+            </div>
+            <div class="pure-u-1-5 action Ltar">
+                <div class="inn"><span class="action-box action-icon-only"><i class="icon-SignOut action-icon"></i></span></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!---->
+        <div class="page_hotelDetail">
+            <div class="CtopInfoCard">
+                <div class="edgeGap">
+                    <div class="inn bgwhite">
+                        <div class="pure-g hotelinfo">
+                            <div class="pure-u-6-24 hotelimg" style="display: flex; flex-flow: row; width: 100%">
+                                <div class="imgs">
+                                    <img src="./detail/2moaz0.jpeg.120-120.jpg" alt="">
+                                </div>
+                                <div style="width: 2%"></div>
+                                <div class="imgs">
+                                    <img src="./detail/2moaz0.jpeg.120-120.jpg" alt="">
+                                </div>
+                                <div style="width: 2%"></div>
+                                <div class="imgs">
+                                    <img src="./detail/2moaz0.jpeg.120-120.jpg" alt=""><span><i class="icon-pic"></i>11</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div>
+                            <div class="inner">
+                                <div class="box">
+                                    <div class="pure-g title">
+                                        <div class="pure-u-22-24">
+                                            <i class="icon_clean_0"></i>
+                                            <h3 class="CName">海友琼海南翔古漪园酒店(内宾)</h3>
+                                            <input type="hidden" id="Cid" />
+                                        </div>
+                                        <div class="pure-u-2-24 "><i class="icon-in_jiantou1"></i></div>
+                                    </div>
+                                    <p class="location">琼海市嘉定区南翔古猗园路371号</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="CdataSelect">
+                                    <div class="row justify-content-around">
+                                        <div class="col ">
+                                            <input class="intime" placeholder="入住日期" name="ksrq" id="LAY_s"/>
+                                        </div>
+                                        <div class="col text-right">1晚</div>
+                                    </div>
+                                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-between" style="line-height:2rem" >
+                <div class="col ">
+                    <span >5.0分</span>
+                </div>
+                <div class="col text-right">
+                    <a href="javascript:void(0)">24条评价</a>
+                </div>
+            </div>
+            <div id="view"></div>
+
+        </div>
+    </div>
+    <script id="demo" type="text/html">
+        {{#  layui.each(d.rtlist, function(index, item){ }}
+                  <div class="row align-items-center" style="background-color: white">
+                      <div class="col-8">
+                          <h3>{{ item.Name }}</h3>
+                      </div>
+                      <div class=""><del>￥{{ item.Price }}</del>(门市价)</div>
+                  </div>
+            {{#  layui.each(d.gtlist, function(index, gt){ }}
+                <div class="row" style="display: flex; flex-flow: row; justify-content: space-between; align-items: center;line-height:2rem">
+                    <div class="col-6 roomType">
+                        <span style="font-size:1rem">{{ gt.Name }}</span>
+                    </div>
+                    <div class="col"><span>{{ Math.ceil(item.Price*gt.Trate) }}</span></div>
+                    <div class="col">
+                    <div  style="background-color: #7f1f59; line-height: 1.5rem; min-width: 20%; text-align: center; border-radius: 5px;">
+                        <a href="javascript:yuding({{ item.Id }},{{ gt.Id }},'{{ item.Name }}');" class="btn-pay" style="font-size: 0.8rem; text-decoration: none; color: white"><span class="text-order">预订</span><br>
+                        </a>
+                    </div>
+                    </div>
+                </div>
+            {{#  }); }}
+
+        {{#  }); }}
+        {{#  if(d.length === 0){ }}
+            无数据
+        {{#  } }} 
+    </script>
+    <script type="text/javascript" src="/Content/layui/layui.js"></script>
+    <script>
+        var gtjson = "";
+        layui.use(['laytpl', 'layer', 'jquery', 'laydate'], function () {
+            var laytpl = layui.laytpl;
+            var laydate = layui.laydate;
+            $ = layui.$;
+
+            $.getJSON('/hotel/GetRTList', function (json) {
+                var getTpl = demo.innerHTML
+                    , view = document.getElementById('view');
+                laytpl(getTpl).render(json, function (html) {
+                    view.innerHTML = html;
+                });
+
+            });
+
+            laydate.render({
+                elem: '#LAY_s'
+            });
+
+
+
+
+        });
+
+        function yuding(rt, gt, rtname) {
+            layui.use(['form', 'layer'], function () {
+                var form = layui.form;
+                    
+                var indexa = layui.layer.open({
+                    title: "填写订单",
+                    type: 2,
+                    content: 'pay.html',
+                    success: function (layero, index) {
+                        var body = layui.layer.getChildFrame('body', index);
+
+                        body.find(".rtName").html(rtname);
+                        body.find("#GTId").val(gt);
+                        body.find("#RTId").val(rt);
+                        //body.find("#CId").val($("#CId").val());
+                        body.find("#CId").val(1);
+                        body.find(".CName").text($(".CName").text());
+                        body.find(".intime").text($(".intime").text());
+                    }
+                });
+                layui.layer.full(indexa);
+
+                
+            });
+        }
+    </script>
+</body>
+</html>

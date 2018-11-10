@@ -24,9 +24,9 @@ namespace SHAN.Web
                 .Where(t => t.Name.EndsWith("Repository"))
                 .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired();
             builder.RegisterGeneric(typeof(BaseEFRepository<>)).As(typeof(IEFRepository<>))
-    .InstancePerDependency().InstancePerLifetimeScope();
+                .InstancePerDependency().InstancePerLifetimeScope();
 
-            builder.Register(context=> new EFDbContext()).InstancePerDependency();
+            builder.Register(context=> new EFDbContext()).InstancePerDependency().SingleInstance();
 
             builder.RegisterControllers(Assembly.GetExecutingAssembly()).PropertiesAutowired();
 

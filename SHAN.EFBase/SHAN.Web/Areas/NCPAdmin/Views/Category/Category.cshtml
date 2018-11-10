@@ -1,0 +1,158 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>分类管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="/Content/layui/css/layui.css" media="all" />
+</head>
+<body>
+    <form class="layui-form">
+        <blockquote class="layui-elem-quote quoteBox">
+            <form class="layui-form">
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input searchVal" placeholder="请输入搜索的内容" />
+                    </div>
+                    <a class="layui-btn search_btn" data-type="reload">搜索</a>
+                </div>
+                <div class="layui-inline">
+                    <a class="layui-btn layui-btn-normal new_btn">添加</a>
+                </div>
+                <div class="layui-inline">
+                    <a class="layui-btn layui-btn-normal edit_btn">编辑</a>
+                </div>
+                <div class="layui-inline">
+                    <a class="layui-btn layui-btn-danger layui-btn-normal del_btn">删除</a>
+                </div>
+            </form>
+        </blockquote>
+        <table id="category" lay-filter="category"></table>
+    </form>
+    <script type="text/javascript" src="/Content/layui/layui.js"></script>
+    <script src="~/Scripts/linq.min.js"></script>
+
+    <script>
+        var ctabledata = new Array();
+        layui.use(['form', 'layer', 'table', 'laytpl'], function () {
+            var form = layui.form,
+                layer = parent.layer === undefined ? layui.layer : top.layer,
+                $ = layui.jquery,
+                laytpl = layui.laytpl,
+                table = layui.table;
+
+            $.post('/NCPAdmin/Category/List', function (res) {
+                Enumerable.from(res.data)
+                    .where("x=>x.Cid==0")
+                    .orderBy("$.Id")
+                    .toArray()
+                    .forEach(function (i) {
+                        ctabledata.push(i);
+                        Enumerable.from(res.data)
+                            .where("$.Cid=="+i.Id)
+                            .orderBy("$.Id")
+                            .toArray()
+                            .forEach(function (二级) {
+                                ctabledata.push(二级);
+                                Enumerable.from(res.data)
+                                    .where("$.Cid==" + 二级.Id)
+                                    .orderBy("$.Id")
+                                    .toArray()
+                                    .forEach(function (三级) {
+                                        三级.er_Name = 三级.Name;
+                                        三级.Name = "";
+                                        ctabledata.push(三级);
+
+                                    });
+                            });
+                    });
+                //ctabledata = res.data;
+
+                table.render({
+                    elem: '#category'
+                    , data: ctabledata
+                    , limit: 50
+                    //, method: "post"
+                    //, url: '/NCPAdmin/Category/List' //数据接口
+                    , cols: [[ //表头
+                        { type: 'checkbox' }
+                        , { field: 'Id', title: 'ID', width: 60, sort: true }
+                        , { field: 'Name', title: '一级栏目', width: 100 }
+                        , { field: 'er_Name',title: '二级栏目', width: 100}
+                        //, { field: 'Pic', title: '封面图', width: 80, templet: '<div><img src="{{ d.Pic}}"></div>', style: 'height:24px;width:24px;line-height:24px!important;' }
+                        , { field: 'Concent', title: '备注' }
+
+                    ]]
+                });
+            });
+
+
+            $(".search_btn").on("click", function () {
+                if ($(".searchVal").val() != '') {
+                    table.reload("category", {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        },
+                        where: {
+                            key: $(".searchVal").val()  //搜索的关键字
+                        }
+                    })
+                } else {
+                    layer.msg("请输入搜索的内容");
+                }
+            });
+
+            $(".new_btn").click(function () {
+                location.href = "/NCPAdmin/Category/Edit";
+            })
+
+            $(".edit_btn").click(function () {
+                var checkStatus = table.checkStatus('category'),
+                    data = checkStatus.data;
+                if (data.length !== 1) {
+                    layer.msg("请选择一条记录");
+                } else {
+                    location.href = "/NCPAdmin/Category/Edit?Id=" + data[0].Id;
+                }
+            })
+
+            //删除
+            $(".del_btn").click(function () {
+                var checkStatus = table.checkStatus('category'),
+                    data = checkStatus.data,
+                    newsId = [];
+                if (data.length === 1) {
+
+                    layer.confirm('确定删除这条记录？', { icon: 3, title: '提示信息' }, function (index) {
+                        $.post("/NCPAdmin/Category/Delete", data[0], function (res) {
+                            ctabledata = Enumerable.from(ctabledata)
+                                .where("$.Id!=" + data[0].Id)
+                                .orderBy("$.Id")
+                                .toArray();
+
+                            layer.msg(res.msg);
+                            table.reload("category", { data: ctabledata });
+                        });
+                        layer.close(index);
+                    })
+                } else {
+                    layer.msg("请选择需要删除的一条记录");
+                }
+            })
+
+        });
+    </script>
+</body>
+</html>

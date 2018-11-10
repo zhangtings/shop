@@ -6,9 +6,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using CZ.Models.Common;
+using SHAN.Service.DTO;
 
-namespace CZ.Application.Tools
+namespace Hotel.Application.Tools
 {
     /// <summary>
     /// 分页扩展类
@@ -24,7 +24,7 @@ namespace CZ.Application.Tools
         /// <param name="pageSize">分页大小</param>
         /// <param name="total">输出符合条件的总记录数</param>
         /// <returns></returns>
-        public static IQueryable<TEntity> GetPage<TEntity>(this IQueryable<TEntity> source, int pageIndex, int pageSize, out int total) where TEntity:DDb.Entity
+        public static IQueryable<TEntity> GetPage<TEntity>(this IQueryable<TEntity> source, int pageIndex, int pageSize, out int total) where TEntity: SHAN.Entity.BaseEntity
         {
             total = source.Count();
             return source.Skip((pageIndex - 1) * pageSize).Take(pageSize);
@@ -39,20 +39,20 @@ namespace CZ.Application.Tools
         /// <param name="pageSize">分页大小</param>
         /// <param name="total">输出符合条件的总记录数</param>
         /// <returns></returns>
-        public static IQueryable<TEntity> GetPage<TEntity>(this IQueryable<TEntity> source, Pagination Pager) where TEntity : DDb.Entity
+        public static IQueryable<TEntity> GetPage<TEntity>(this IQueryable<TEntity> source, PageDTO Page) where TEntity : SHAN.Entity.BaseEntity
         {
-            if (Pager == null)
+            if (Page == null)
             {
-                Pager=new Pagination()
+                Page = new PageDTO()
                 {
                     CurrentPage = 1,
                     PageSize = 10
                 };
             }
 
-            if (Pager.Total==0) Pager.Total = source.Count();
-            Pager.PageNum = Convert.ToInt32( Math.Ceiling(Convert.ToDecimal(Pager.Total) / Pager.PageSize));
-            return source.Skip((Pager.CurrentPage - 1) * Pager.PageSize).Take(Pager.PageSize);
+            if (Page.Total==0) Page.Total = source.Count();
+            Page.PageNum = Convert.ToInt32( Math.Ceiling(Convert.ToDecimal(Page.Total) / Page.PageSize));
+            return source.Skip((Page.CurrentPage - 1) * Page.PageSize).Take(Page.PageSize);
         }
     }
 }

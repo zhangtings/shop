@@ -1,0 +1,265 @@
+﻿@{
+    Layout = null;
+}
+@model SHAN.Service.酒店用户DTO
+<!DOCTYPE html>
+<html style="font-size:87.5%">
+<head>
+    <meta charset="utf-8">
+    <title>酒店详情</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="/Content/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="/Content/bootstrap.css" media="all" />
+    <style>
+        .row {
+            margin: 0;
+        }
+
+        .img-fluid {
+            max-height: 6.5rem;
+            padding-right: 2px;
+            padding-left: 2px;
+            border-radius:10px;
+        }
+
+        .layui-collapse {
+            border-width: 0;
+        }
+
+        .layui-colla-title {
+            padding: 0;
+        }
+
+        .layui-colla-icon {
+            right: 10px;
+            left: unset;
+        }
+
+        .layui-colla-content {
+            padding: 0;
+        }
+    </style>
+</head>
+<body style="background-color: #f7f6f5">
+
+    <div class="container " style="padding:0 5px">
+        <div class="row" style="height:0.5rem;background-color: white;">
+        </div>
+        <div>
+            <div style="background-color: white;">
+                <div class="row" style="background-color: white;line-height:5rem">
+                    <div class="col-12 row" style="padding:0" onclick="previewImg(this)">
+                        @{
+
+                            if (!string.IsNullOrEmpty(Model.Pic))
+                            {
+                                var count = 0;
+                                foreach (var item in Model.Pic.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+                                {
+                                      count++;
+                                        if (count<=3) { 
+                                        <img src="@item" class="col-4 img-fluid flex-grow-1" alt="" />
+                                        }
+                                    
+                                            }
+                                        }
+                        }
+                        @*<img src="~/Content/tempimg/01.png" class="rounded img-fluid flex-grow-1" alt="">
+        <img src="~/Content/tempimg/02.png" class="rounded img-fluid flex-grow-1" alt="">
+        <img src="~/Content/tempimg/03.png" class="rounded img-fluid flex-grow-1" alt="">
+        <span class="pull-right" style="position: absolute;"><i class="icon-pic"></i>11</span>*@
+                    </div>
+                </div>
+                <div class="row" style="line-height:3rem;background-color: white;font-size:1rem;margin-top:1rem">
+                    <div class="col ">
+                        <h5 class="CName">
+                            @Model.CompanyName
+                        </h5>
+                        <input type="hidden" id="Cid" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="line-height:4rem;font-size:1rem;margin-top:2px;background:url(/Content/tempimg/04.png) no-repeat right;background-size:auto 4rem;background-color: white;">
+                <div class="col">
+                    @Model.Address
+                </div>
+
+            </div>
+            <div class="row justify-content-between" style="line-height:3.3rem;background-color: white;margin-top:2px;color:#7f1f59">
+                <div class="col ">
+                    <span style="font-size:1.25rem;">5.0</span>分
+                </div>
+                <div class="col text-right" style="padding-right:30px;font-size:0.8rem">
+                    24条评价<i class="layui-icon layui-colla-icon"></i>
+                </div>
+
+            </div>
+            <div class="row justify-content-around " style="background-color: white;font-size:1rem;line-height:3.3rem;margin-top:5px;color:#7f1f59">
+                <div class="col-8 ">
+                    <input class="intime " readonly placeholder="入住日期" name="ksrq" id="LAY_s" style="line-height:1.5rem;width:35%;border:0" />—
+                    <input class="outtime " readonly placeholder="离开日期" name="jsrq" id="LAY_e" style="line-height:1.5rem;width:40%;border:0" />
+                </div>
+                <div class="col text-right" style="padding-right:30px;font-size:0.8rem">入住1晚<i class="layui-icon layui-colla-icon"></i></div>
+            </div>
+            <div class="layui-collapse" id="view" style="margin-top:2px" lay-accordion="" lay-filter="test"></div>
+            @Html.HiddenFor(r=>r.Id)
+            @Html.HiddenFor(r=>r.Tips)
+        </div>
+    </div>
+    <script id="demo" type="text/html">
+        {{#  layui.each(d.rtlist, function(index, item){ }}
+        <div class="layui-colla-item">
+            <div class="layui-colla-title" style="height:5rem;line-height:5rem">
+                <div class="row align-items-center" style="background-color: white;line-height: 5rem;">
+                    <div class="col-8">
+                        <span style="font-size:1.1rem">{{ item.Name }}</span>
+                    </div>
+                    <div class="原价" style="float:right;{{#  if(index !== 0){ }}display:none{{#  } }}"><del>￥{{ item.Price }}</del>(门市价)</div>
+                    <div class="col 最低 flex-grow-1 " style="float:right;color:#78756f;{{#  if(index === 0){ }}display:none{{#  } }}">
+                        <span style="color:red;font-size:1.3rem">￥{{ item.AddPrice }}</span>
+                        <text style="font-size:1rem">&nbsp;起</text>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-colla-content {{#  if(index === 0){ }}
+            layui-show
+            {{#  } }}">
+                {{#  layui.each(d.gtlist, function(index, gt){ }}
+                <div class="row" style="justify-content: space-between; align-items: center;line-height:5rem;border-bottom:1px solid #d7d7d7">
+                    <div class="col-6 roomType">
+                        <span style="font-size:1rem;color:#7f1f59;">{{ gt.Name }}</span>
+                    </div>
+                    <div class="col p-0"><span style="color:#78756f;font-size:0.8rem">无早</span></div>
+                    <div class="col p-0"><span style="color:red;font-size:1.3rem">￥{{ Math.ceil(item.Price*gt.Trate) }}</span><input type="hidden" class="danjia" value="" /></div>
+                    <div class="col ">
+                        <div style="background-color: #7f1f59; line-height: 2rem; min-width: 20%; text-align: center; border-radius: 5px;">
+                            <a href="javascript:yuding({{ item.Id }},{{ gt.Id }},'{{ item.Name }}',{{ Math.ceil(item.Price*gt.Trate) }});" class="btn-pay" style="font-size: 1rem; text-decoration: none; color: white">
+                                <span class="text-order">预订</span><br>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {{#  }); }}
+            </div>
+        </div>
+        {{#  }); }}
+        {{#  if(d.length === 0){ }}
+        无数据
+        {{#  } }}
+    </script>
+    <script type="text/javascript" src="/Content/layui/layui.js"></script>
+    <script>
+        var gtjson = "";
+        layui.use(['laytpl', 'element', 'layer', 'jquery', 'laydate'], function () {
+            var element = layui.element;
+            var laytpl = layui.laytpl;
+            var laydate = layui.laydate;
+
+            $ = layui.$;
+
+            $.get('/hotel/hotel/GetRTList?cid='+$('#Id').val(), function (json) {
+                var getTpl = demo.innerHTML
+                    , view = document.getElementById('view');
+                console.log(json);
+                layui.each(json.rtlist, function (index, rt) {
+                    rt.AddPrice = Math.ceil(rt.Price * json.gtlist[0].Trate);
+
+                });
+
+                laytpl(getTpl).render(json, function (html) {
+                    view.innerHTML = html;
+                    element.init();
+                });
+
+            });
+            var now = new Date();
+            now.setDate(now.getDate() + 1);
+            laydate.render({
+                elem: '#LAY_s'
+                , value: new Date()
+                , isInitValue: true
+                , format: 'MM月dd日'
+            });
+            laydate.render({
+                elem: '#LAY_e'
+                , value: now
+                , isInitValue: true
+                , format: 'MM月dd日'
+            });
+
+            element.on('collapse(test)', function (data) {
+                if (data.show) {
+                    $('.最低').hide();
+                    $('.原价').show();
+                } else {
+                    $('.原价').hide();
+                    $('.最低').show();
+
+                }
+            });
+
+
+        });
+
+        function previewImg(obj) {
+
+            var imgHtml;
+            ////弹出层
+            $(obj).find('img').each(function (i, item) {
+                imgHtml = "<img src='" + item.src + "'/>"
+            });
+            layer.open({
+                type: 1,
+                shade: 1,
+                offset: 'auto',
+                shadeClose: true,
+                scrollbar: false,
+                title: false, //不显示标题
+                content: imgHtml, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                cancel: function () {
+                    return false
+                    //layer.msg('捕获就是从页面已经存在的元素上，包裹layer的结构', { time: 5000, icon: 6 });
+                }
+            });
+        }
+
+
+        function yuding(rt, gt, rtname, dj) {
+            layui.use(['form', 'layer'], function () {
+                var form = layui.form;
+
+                var indexa = layui.layer.open({
+                    title: false,
+                    type: 2,
+                    content: 'AddOrder',
+                    closeBtn: 0,
+                    success: function (layero, index) {
+                        var body = layui.layer.getChildFrame('body', index);
+                        body.find(".rtName").html(rtname);
+                        body.find("#GTId").val(gt);
+                        body.find("#RTId").val(rt);
+                        body.find("#CId").val($("#Id").val());
+                        //body.find("#CId").val(1);
+                        body.find(".CName").text($(".CName").text());
+                        body.find(".intime").text($(".intime").val());
+                        body.find(".outtime").text($(".outtime").val());
+                        body.find(".Tips").text($("#Tips").val());
+                        body.find(".jiage").html('￥' + dj);
+                    }
+                });
+                layui.layer.full(indexa);
+
+
+            });
+        }
+    </script>
+</body>
+</html>
