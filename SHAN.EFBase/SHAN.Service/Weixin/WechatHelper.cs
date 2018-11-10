@@ -8,7 +8,7 @@ using System.Net;
 using System.Xml;
 using Newtonsoft.Json;
 using System.Globalization;
-using DDb.Common;
+
 
 namespace CZ.Application.Weixin
 {
@@ -21,23 +21,23 @@ namespace CZ.Application.Weixin
         public String Mch_id = string.Empty;
         public String PayKey = string.Empty;
 
-        public WechatHelper()
-        {
-            int wid = 2;
-            var weixin = Factory.Instance().iUserWeixinService.GetUserWeixin(Convert.ToInt32(wid));
-            this.AppId = weixin.AppId;
-            this.AppSecret = weixin.AppSecret;
-            this.Mch_id = weixin.Mch_id;
-            this.PayKey = weixin.PayKey;
-        }
-        public WechatHelper(object wid)
-        {
-            var weixin = Factory.Instance().iUserWeixinService.GetUserWeixin(Convert.ToInt32(wid));
-            this.AppId = weixin.AppId;
-            this.AppSecret = weixin.AppSecret;
-            this.Mch_id = weixin.Mch_id;
-            this.PayKey = weixin.PayKey;
-        }
+        //public WechatHelper()
+        //{
+        //    //int wid = 2;
+        //    //var weixin = Factory.Instance().iUserWeixinService.GetUserWeixin(Convert.ToInt32(wid));
+        //    this.AppId = weixin.AppId;
+        //    this.AppSecret = weixin.AppSecret;
+        //    this.Mch_id = weixin.Mch_id;
+        //    this.PayKey = weixin.PayKey;
+        //}
+        //public WechatHelper(object wid)
+        //{
+        //    //var weixin = Factory.Instance().iUserWeixinService.GetUserWeixin(Convert.ToInt32(wid));
+        //    this.AppId = weixin.AppId;
+        //    this.AppSecret = weixin.AppSecret;
+        //    this.Mch_id = weixin.Mch_id;
+        //    this.PayKey = weixin.PayKey;
+        //}
 
         #region 公开方法
 
@@ -256,7 +256,7 @@ namespace CZ.Application.Weixin
              
             string url = "https://api.mch.weixin.qq.com/pay/orderquery"; //订单查询地址
             string postRes = this.Post(url, o.ToPostData());
-            LogHelper.Info<WechatHelper>("微信支付统支付后查询响应数据:" + postRes);
+            //LogHelper.Info<WechatHelper>("微信支付统支付后查询响应数据:" + postRes);
             return new OrderQueryResponse(postRes);
         }
 
@@ -425,7 +425,7 @@ namespace CZ.Application.Weixin
             {
                 ret.errcode = "-9";
                 ret.errmsg = ex.Message + res;
-                LogHelper.Error<string>(ex, "发送模板消息Message：" + ret.errmsg);
+                //LogHelper.Error<string>(ex, "发送模板消息Message：" + ret.errmsg);
             }
             return ret;
         }
@@ -480,7 +480,7 @@ namespace CZ.Application.Weixin
             }
             catch(Exception ex)
             {
-                LogHelper.Info<string>("保存图片失败" + ex.StackTrace);
+                //LogHelper.Info<string>("保存图片失败" + ex.StackTrace);
                 return false;
             }
 

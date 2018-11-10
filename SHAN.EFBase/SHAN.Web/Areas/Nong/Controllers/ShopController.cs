@@ -12,6 +12,8 @@ namespace Nong.Areas.Nong.Controllers
     {
         public IProductService _iProSer { get; set; }
         public ICategoryService _iCateSer { get; set; }
+        public IOrderService _iOrdSer { get; set; }
+        public ICartService  _iCartSer { get; set; }
 
         public ActionResult Index()
         {
@@ -62,7 +64,8 @@ namespace Nong.Areas.Nong.Controllers
 
         public ActionResult Cart(商品DTO dTO)
         {
-            
+            前端用户DTO user = (前端用户DTO) Session["user"];
+            ViewBag.list = _iCartSer.List(new 购物车DTO());
             return View();
         }
 
@@ -70,6 +73,26 @@ namespace Nong.Areas.Nong.Controllers
         {
             
             return View();
+        }
+
+        public ActionResult MyOrder(订单DTO dTO)
+        {
+            ViewBag.list = _iOrdSer.List(dTO);
+            return View();
+        }
+
+        public JsonResult AddTOCart(订单DTO dTO)
+        {
+            //_iCartSer.Save();
+            var msg = "添加成功";
+            var json = new
+            {
+                code = 0,
+                msg = msg,
+                count = 0,
+                data = ""
+            };
+            return Json(json);
         }
 
         public ActionResult AddOrder(int? Cid)
