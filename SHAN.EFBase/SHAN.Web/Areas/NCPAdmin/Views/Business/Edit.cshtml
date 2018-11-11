@@ -22,7 +22,7 @@
             <li class="layui-this">基本信息</li>
             <li>轮播图</li>
             <li>商家介绍</li>
-            <li>位置信息</li>
+            @*<li>位置信息</li>*@
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
@@ -38,6 +38,7 @@
                     @Html.HiddenFor(r => r.ShenHe)
                     @Html.HiddenFor(r => r.Photox)
                     @Html.HiddenFor(r => r.Tags)
+                    @Html.HiddenFor(r => r.Area)
                     <div class="layui-form-item layui-row layui-col-xs12">
                         <label class="layui-form-label">商家名称</label>
                         <div class="layui-input-block">
@@ -45,10 +46,13 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">设置折扣</label>
-                        <div class="layui-input-inline">
-                            <input class="layui-input" id="Zhekou" name="Zhekou" type="text" value="@Model.Zhekou" lay-verify="required">
+                        <label class="layui-form-label">区域</label>
+                        <div class="layui-input-block">
+                            <select name="areaid" id="areaid" lay-filter="areaid">
+                                <option value="">请选择</option>
+                            </select>
                         </div>
+                        
                     </div>
                     <div class="layui-form-item layui-row layui-col-xs12">
                         <label class="layui-form-label">分类</label>
@@ -57,8 +61,15 @@
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label ">地址</label>
-                        <div class="layui-input-inline w600">
+                        <div class="layui-input-block ">
                             <input class="layui-input" id="Address" name="Address" type="text" value="@Model.Address" lay-verify="required">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label ">联系人</label>
+                        <div class="layui-input-inline w600">
+                            <input class="layui-input" id="Quan" name="Quan" type="text" value="@Model.Quan" lay-verify="required">
                         </div>
                     </div>
 
@@ -70,21 +81,14 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label ">营业时间</label>
-                        <div class="layui-input-inline w500">
-                            <input class="layui-input" id="Quan" name="Quan" placeholder="如：早晨9:00-次日凌晨7:00" type="text" value="@Model.Quan" lay-verify="required">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label ">标签</label>
-                        <div class="layui-input-inline w500">
-                            <input class="layui-input" id="BiaoQian" name="BiaoQian" placeholder="逗号分隔" type="text" value="@Model.BiaoQian">
+                        <label class="layui-form-label ">商家简介</label>
+                        <div class="layui-input-block ">
+                            <input class="layui-input" id="BiaoQian" name="BiaoQian"  type="text" value="@Model.BiaoQian">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label ">广告语</label>
-                        <div class="layui-input-inline w500">
+                        <div class="layui-input-block ">
                             <input class="layui-input" id="GuangGao" name="GuangGao" type="text" value="@Model.GuangGao">
                         </div>
                     </div>
@@ -210,9 +214,30 @@
 
             });
 
+            $.post('/ncpadmin/Column/List?Name=乡镇特色', function (res) {
+                //dropListData = res.data;
+                if (res.data.length > 0) {
+                    layui.each(res.data, function (index, ar) {
+                        if (ar.Name !== "乡镇特色") {
+                            var option = "<option value=\"" + ar.Id + "\"";
+                            option += ">" + ar.Name + "</option>";
+                            $("select[name=areaid]").append(option);
+                        }
+                    });
+
+                };
+                if ($("#Area").val() > 0) {
+
+                    $("select[name=areaid]").val($("#Area").val());
+                }
+                form.render('select');
+            });
+
+
             //提交处理数据
             form.on("submit(subbtn)", function (data) {
                 data.field.Cid = $('#cid').val();
+                data.field.Area = $('#areaid').val();
                 data.field.Des = layedit.getContent(富文本);
                 var arr = new Array();
                 $("input:checkbox[name='fenlei']:checked").each(function (i) {

@@ -19,7 +19,7 @@ namespace SHAN.Service
             get;
             set;
         }
-
+        public string AreaName {  get;set; }
         public string Address
         {
             get;

@@ -781,6 +781,7 @@
     <Content Include="Areas\Nong\Views\Shop\Plist.cshtml" />
     <Content Include="Areas\Nong\Views\Shop\Myshop.cshtml" />
     <Content Include="Areas\Nong\Views\Shop\Cart.cshtml" />
+    <Content Include="Areas\Nong\Views\Nong\UnitList.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>

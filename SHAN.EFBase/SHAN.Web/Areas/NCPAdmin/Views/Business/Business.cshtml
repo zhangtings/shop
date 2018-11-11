@@ -67,28 +67,32 @@
                             { type: 'checkbox' }
                             , { field: 'Id', title: 'ID', width: 60, sort: true }
                             , { field: 'Title', title: '商户名称' }
-                            , { field: 'Area', title: '区域', width: 100 }
+                            , { field: 'AreaName', title: '区域', width: 100 }
                             , { field: 'Tags', title: '分类' }
                             , { field: 'Address', title: '地址' }
-                            , { field: 'ShenHe', title: '状态', width: 100, templet: '<div>{{ d.ShenHe==0?"申请中":"已通过"}}</div>' }
+                            , { field: 'Quan', title: '联系人' }
+                            , { field: 'Tel', title: '电话' }
+                            //, { field: 'ShenHe', title: '状态', width: 100, templet: '<div>{{ d.ShenHe==0?"申请中":"已通过"}}</div>' }
                             //, { field: 'Photo_x', title: '封面图', width: 80, templet: '<div><img src="{{ d.Pic}}"></div>', style: 'height:24px;width:24px;line-height:24px!important;' }
                         ]]
                         , done: function (res, page, count) {
                             $("[data-field='Tags']").children().each(function () {
                                 var showstring = "";
-                                var arrtags = $(this).text().split(",").map(Number);
+                                if ($(this).text() !== "分类") {
+                                    var arrtags = $(this).text().split(",").map(Number);
 
-                                Enumerable.from(sjfl)
-                                    .where(function (x) { return arrtags.indexOf(x.Id) > -1 ? 1 : 0 })
-                                    .orderBy("$.Id")
-                                    .toArray()
-                                    .forEach(function (i) {
-                                        showstring += " " + i.Name;
-                                    });
+                                    Enumerable.from(sjfl)
+                                        .where(function (x) { return arrtags.indexOf(x.Id) > -1 ? 1 : 0 })
+                                        .orderBy("$.Id")
+                                        .toArray()
+                                        .forEach(function (i) {
+                                            showstring += " " + i.Name;
+                                        });
 
-                                $(this).text(showstring);
+                                    $(this).text(showstring);
+                                }
+                            });
 
-                            })
                         }
                     });
                 });

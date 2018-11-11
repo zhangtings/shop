@@ -1,6 +1,7 @@
 ﻿@using SHAN.Service;
 @{
     Layout = null;
+    List<商品DTO> plist = ViewBag.商品;
 }
 
 <!DOCTYPE html>
@@ -18,94 +19,40 @@
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="/Content/bootstrap.css" media="all" />
     <link rel="stylesheet" href="/Content/layui/css/layui.css" media="all" />
-    <style>
-        .layui-tab {
-            position: relative;
-            min-height: 800px;
-            border: 0;
-            margin: 0;
-        }
 
-        .layui-tab-card > .layui-tab-title {
-            min-height: 800px;
-            border: 0;
-            background-color: #f3f5f7;
-        }
-
-        .layui-tab-title li {
-            text-align: center;
-            border: 0;
-        }
-
-        .layui-this {
-            color: black;
-            background-color: white;
-        }
-
-        .layui-tab-title .layui-this:after {
-            border: 0;
-        }
-        .底部 {
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-            z-index: 99;
-        }
-    </style>
 </head>
-<body class="container-fluid px-0">
-    <div class="layui-tab layui-tab-card d-flex">
-        <ul class="layui-tab-title  d-flex flex-column ">
-            @{
-                List<分类DTO> dTOs = ViewBag.Categores;
-                int index = 0;
-                if (ViewBag.Categores != null)
-                {
+<body class="container" style="background-color:#f2f2f2">
+    <div class="row">
 
-                    foreach (var items in from a in dTOs where a.Cid == 1 orderby a.Sort select a)
-                    {
-                        if (index == 0)
-                        {
-                            <li class="layui-this">@items.Name</li>
-                        }
-                        else
-                        {
-                            <li>@items.Name</li>
-                        }
-                        index++;
-                    }
-                }
-            }
-        </ul>
-        <div class="layui-tab-content flex-grow-1">
-            @{
-                if (ViewBag.Categores != null)
-                {
-                    index = 0;
-                    foreach (var items in from a in dTOs where a.Cid == 1 orderby a.Sort select a)
-                    {
-                        <div class="layui-tab-item @(index == 0 ? "layui-show" : "")">
-                            <div class="row" style="margin:0">
-                                @foreach (var item in from c in dTOs where c.Cid == items.Id orderby c.Sort select c)
-                                {
-                                    <a class="col-4 pl-0" style="height:120px;text-align:center" href="Plist?Cid=@item.Id">
-                                        <img src="@(item.Bz_1.IndexOf("/")==0?item.Bz_1:"/"+item.Bz_1)" class="img-responsive" alt="未找到图片" style="width:83px;height:83px" />
-                                        <p class="text-content">@item.Name</p>
-                                    </a>
+        @{
+            foreach (var p in plist)
+            {
+                <a class="col-6 p-1" href="../Shop/Pinfo?Id=@p.Id">
+                    <div class="card ">
+                        <img class="card-img-top" src="@(p.Photo_x.IndexOf("/") == 0 ? p.Photo_x : "/" + p.Photo_x) " alt="" style="height:150px" />
+                        <div class="card-body p-1">
+                            <p class="card-title font-weight-bold" style="letter-spacing: 0;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">@p.Name</p>
+                            <p class="card-text" style="font-size:0.8rem">
+                                @{ if (p.Price_yh > 0)
+                                    {
+                                        <span style="margin-left:4%">原价：<del>￥@p.Price</del></span><br />
+                                        <b style="color:red;font-size:1rem">￥@p.Price_yh</b><span style="float:right">@p.Shiyong 人已购买</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="margin-left:4%">新品上市</span><br />
+                                        <b style="color:red;font-size:1rem">￥@p.Price</b><span style="float:right">@p.Shiyong 人已购买</span>
+                                    }
 
                                 }
-
-                            </div>
+                            </p>
                         </div>
-                        index++;
-                    }
-                }
-
-
-
+                    </div>
+                </a>
             }
+        }
 
-        </div>
+
     </div>
 
     <footer class="底部 container ">
